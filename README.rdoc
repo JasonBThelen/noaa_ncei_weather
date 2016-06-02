@@ -1,0 +1,11 @@
+= NOAA NCEI Weather
+
+Not yet ready for use!
+
+Ruby wrapper to the NOAA NCEI Weather API at http://www.ncdc.noaa.gov/cdo-web/webservices/v2
+
+== This is where documentation should go
+
+* Information on getting a key
+* Installing gem or including in gemfile
+* using to fetch weather
