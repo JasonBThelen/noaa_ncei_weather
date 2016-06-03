@@ -1,110 +1,161 @@
+require "noaa_ncei_weather/version"
+
 module NoaaNceiWeather
-  class Weather
-    attr_writer :token
-    @params = {}
+  require "rest-client"
+
+  module Connection
     @@url = 'http://www.ncdc.noaa.gov/cdo-web/api/v2/'
+    @@token = ''
 
-    def initialize(token, params = {})
-      @token = token
-      @params = params
+    def self.token=(token)
+      @@token = token
     end
 
-    def params
-      @params
-    end
-
-    def params=(params)
-      @params.merge!(params)
-    end
-
-    def params_reset
-      @params = {}
-    end
-
-    # Datasets: Set of information from which specific data can be pulled
-    ## Each is like a table with different columns
-    ## Examples are "Annual Summaries", "Daily Summaries", Radar, "Precipitation Hourly"
-    def query_datasets(params = {})
-      data = request('datasets', @params.merge(params))
-      return data['results']
-    end
-
-    def dataset_info(id = params[:datasetid])
-      data = request("datasets/#{id}")
-      return data
-    end
-
-    # Data Categories: Categories in which the data types fall
-    def query_datacategories(params = {})
-      data = request('datacategories', params)
-      return data['results']
-    end
-
-    def datacategory_info(id = params[:datacategoryid])
-      data = request("datacategories/#{id}")
-      return data
-    end
-
-    # Data Types: Columns of data that can be pulled
-    def query_datatypes(params = {})
-      data = request('datatypes', params)
-      return data['results']
-    end
-
-    def datatype_info(id = params[:datatypeid])
-      data = request("datatypes/#{id}")
-      return data
-    end
-
-    # Location Categories: Type of location, like state or zip
-    def query_location_categories(params = {})
-      data = request('locationcategories', @params.merge(params))
-      return data['results']
-    end
-
-    def locationcategory_info(id = params[:locationcategoryid])
-      data = request("locationcategories/#{id}")
-      return data
-    end
-
-    # Location: Can be a long/lat point like a station, or an area like a city, state, or zip
-    def query_locations(params = {})
-      data = request('locations', @params.merge(params))
-      return data['results']
-    end
-
-    def location_info(id = params[:locationid])
-      data = request("locations/#{id}")
-      return data
-    end
-
-    # Station: A specific long/lat point location, where weather information is measured and reported
-    def query_stations(params = {})
-      data = request('stations', @params.merge(params))
-      return data['results']
-    end
-
-    def station_info(id = params[:stationid])
-      data = self.request("stations/#{id}")
-      return data
-    end
-
-    # Data: used for actually fetching specific data after using the other information to set the appropriate parameters
-    def query_data(params = {})
-      data = request('data', @params.merge(params))
-      return data['results']
-    end
-
-    private
-    def request(endpoint, params = {})
+    def self.request(endpoint, params = {})
       url = @@url + endpoint
       begin
-        response = RestClient::Request.execute(method: 'get', url: url, headers: {token: @token, params: params})
+        response = RestClient::Request.execute(method: 'get', url: url, headers: {token: @@token, params: params})
         JSON.parse(response.body)
       rescue RestClient::ExceptionWithResponse => err
         err.response
       end
     end
-
   end
+
+  class Weather
+    def self.all
+      self.where
+    end
+    def self.where(endpoint, params = {})
+      data = Connection.request(endpoint, params)['results']
+      dslist = []
+      data.each do |dataset|
+        set = self.new(dataset)
+        dslist.push(set)
+      end
+      return dslist
+    end
+  end
+
+  class Dataset < Weather
+    @@endpoint = 'datasets'
+    attr_reader :uid, :mindate, :maxdate, :name, :datacoverage, :id
+
+    def initialize(params)
+      @uid = params['uid']
+      @mindate = Date.parse(params['mindate'])
+      @maxdate = Date.parse(params['maxdate'])
+      @name = params['name']
+      @datacoverage = params['datacoverage']
+      @id = params['id']
+    end
+
+    def data_categories(params = {})
+      params.merge!({datasetid: @id})
+      DataCategory.where(params)
+    end
+
+    def self.where(params = {})
+      super(@@endpoint, params)
+    end
+  end
+
+  class DataCategory < Weather
+    @@endpoint = 'datacategories'
+    attr_reader :name, :id
+    def initialize(params)
+      @name = params['name']
+      @id = params['id']
+    end
+
+    def data_types(params = {})
+      params.merge!({datacategoryid: @id})
+      DataType.where(params)
+    end
+
+    def self.where(params = {})
+      super(@@endpoint, params)
+    end
+  end
+
+  class DataType < Weather
+    @@endpoint = 'datatypes'
+    attr_reader :mindate, :maxdate, :name, :datacoverage, :id
+    def initialize(params)
+      @mindate = Date.parse(params['mindate'])
+      @maxdate = Date.parse(params['maxdate'])
+      @name = params['name']
+      @datacoverage = params['datacoverage']
+      @id = params['id']
+    end
+
+    def self.where(params = {})
+      super(@@endpoint, params)
+    end
+  end
+
+  class LocationCategory < Weather
+    @@endpoint = 'locationcategories'
+    attr_reader :name, :id
+    def initialize(params)
+      @name = params['name']
+      @id = params['id']
+    end
+
+    def self.where(params = {})
+      super(@@endpoint, params)
+    end
+  end
+
+  class Locations < Weather
+    @@endpoint = 'locations'
+    attr_reader :mindate, :maxdate, :name, :datacoverage, :id
+    def initialize(params)
+      @mindate = Date.parse(params['mindate'])
+      @maxdate = Date.parse(params['maxdate'])
+      @name = params['name']
+      @datacoverage = params['datacoverage']
+      @id = params['id']
+    end
+
+    def self.where(params = {})
+      super(@@endpoint, params)
+    end
+  end
+
+  class Stations < Weather
+    @@endpoint = 'stations'
+    attr_reader :elevation, :mindate, :maxdate, :latitude, :name, :datacoverage, :id, :elevationunit, :longitude
+    def initialize(params)
+      @elevation = params['elevation']
+      @mindate = Date.parse(params['mindate'])
+      @maxdate = Date.parse(params['maxdate'])
+      @latitude = params['latitude']
+      @name = params['name']
+      @datacoverage = params['datacoverage']
+      @id = params['id']
+      @elevationunit = ['elevationunit']
+    end
+
+    def self.where(params = {})
+      super(@@endpoint, params)
+    end
+  end
+
+  class Data < Weather
+    @@endpoint = 'data'
+    attr_reader :date, :datatype, :station, :attributes, :value
+    def initialize(params)
+      @date = Date.parse(params['date'])
+      @datatype = params['datatype']
+      @station = params['station']
+      @attributes = params['attributes']
+      @value = params['value']
+    end
+
+    def self.where(params = {})
+      super(@@endpoint, params)
+    end
+  end
+
 end
