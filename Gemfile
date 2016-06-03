@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-# gem "rails"
-gem 'rest-client'
+# Specify your gem's dependencies in init.gemspec
+gemspec
