@@ -9,7 +9,7 @@ module NoaaNceiWeather
 
     def locations(params = {})
       params.merge!({locationcategoryid: @id})
-      LocationCategory.where(params)
+      Location.where(params)
     end
 
     def self.where(params = {})

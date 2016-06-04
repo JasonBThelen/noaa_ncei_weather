@@ -1,5 +1,5 @@
 module NoaaNceiWeather
-  class Stations < Weather
+  class Station < Weather
     @@endpoint = 'stations'
     attr_reader :elevation, :mindate, :maxdate, :latitude, :name, :datacoverage, :id, :elevationunit, :longitude
     def initialize(params)
@@ -10,7 +10,7 @@ module NoaaNceiWeather
       @name = params['name']
       @datacoverage = params['datacoverage']
       @id = params['id']
-      @elevationunit = ['elevationunit']
+      @elevationunit = params['elevationunit']
     end
 
     def data_sets(params = {})

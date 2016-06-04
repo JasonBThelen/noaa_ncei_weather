@@ -1,5 +1,5 @@
 module NoaaNceiWeather
-  class Locations < Weather
+  class Location < Weather
     @@endpoint = 'locations'
     attr_reader :mindate, :maxdate, :name, :datacoverage, :id
     def initialize(params)

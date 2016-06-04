@@ -10,9 +10,10 @@ module NoaaNceiWeather
       @id = params['id']
     end
 
-    def data_sets(params = {})
+    # DataType belongs to a Data Set
+    def dataset(params = {})
       params.merge!({datatypeid: @id})
-      Dataset.where(params)
+      Dataset.where(params).first
     end
 
     def stations(params = {})
