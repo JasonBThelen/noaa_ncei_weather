@@ -7,6 +7,11 @@ module NoaaNceiWeather
       @id = params['id']
     end
 
+    def locations(params = {})
+      params.merge!({locationcategoryid: @id})
+      LocationCategory.where(params)
+    end
+
     def self.where(params = {})
       super(@@endpoint, params)
     end

@@ -12,6 +12,16 @@ module NoaaNceiWeather
       DataType.where(params)
     end
 
+    def locations(params = {})
+      params.merge!({datacategoryid: @id})
+      Location.where(params)
+    end
+
+    def stations(params = {})
+      params.merge!({datacategoryid: @id})
+      Station.where(params)
+    end
+
     def self.where(params = {})
       super(@@endpoint, params)
     end
