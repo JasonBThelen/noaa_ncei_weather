@@ -15,5 +15,9 @@ module NoaaNceiWeather
     def self.where(params = {})
       super(@@endpoint, params)
     end
+
+    def self.find(id)
+      super(@@endpoint + "/#{id}")
+    end
   end
 end

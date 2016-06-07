@@ -28,6 +28,10 @@ module NoaaNceiWeather
       DataType.where(params)
     end
 
+    def self.find(id)
+      super(@@endpoint + "/#{id}")
+    end
+
     def self.where(params = {})
       super(@@endpoint, params)
     end
