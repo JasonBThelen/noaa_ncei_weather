@@ -1,10 +1,10 @@
 require './lib/noaa_ncei_weather'
 require 'test/unit'
+require 'helper'
 
 class TestLocationCategory < Test::Unit::TestCase
-
   def setup
-    NoaaNceiWeather::Connection.token = 'yhFqitYUoRXgsSyUVhQCzflGvXUxeocq'
+    TestHelper.connection_setup
   end
 
   test "all should return an array of objects" do

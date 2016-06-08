@@ -1,10 +1,10 @@
 require './lib/noaa_ncei_weather'
 require 'test/unit'
+require 'helper'
 
 class TestStation < Test::Unit::TestCase
-
   def setup
-    NoaaNceiWeather::Connection.token = 'yhFqitYUoRXgsSyUVhQCzflGvXUxeocq'
+    TestHelper.connection_setup
   end
 
   test "all should return an array of objects" do
@@ -29,7 +29,7 @@ class TestStation < Test::Unit::TestCase
   test "find_by_zip should return an array of objects within that zip" do
     data = NoaaNceiWeather::Station.find_by_zip("99645")
     assert_block do
-      data.any? {|station| station.name.include? "Palmer"}
+      data.any? {|station| station.name.include? "PALMER"}
     end
   end
 
