@@ -1,10 +1,8 @@
-require './lib/noaa_ncei_weather'
-require 'test/unit'
 require 'helper'
 
 class TestDataType < Test::Unit::TestCase
   def setup
-    TestHelper.connection_setup
+    super
   end
 
   test ".all should return an array of objects" do

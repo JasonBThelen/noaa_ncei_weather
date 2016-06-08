@@ -1,10 +1,8 @@
-require './lib/noaa_ncei_weather'
-require 'test/unit'
 require 'helper'
 
 class TestData < Test::Unit::TestCase
   def setup
-    TestHelper.connection_setup
+    super
   end
 
   test "query should return an array of data objects" do

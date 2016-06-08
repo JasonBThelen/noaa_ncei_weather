@@ -1,10 +1,8 @@
-require './lib/noaa_ncei_weather'
-require 'test/unit'
 require 'helper'
 
 class TestDataCategory < Test::Unit::TestCase
   def setup
-    TestHelper.connection_setup
+    super
   end
 
   test "all should return an array of objects" do
@@ -25,6 +23,13 @@ class TestDataCategory < Test::Unit::TestCase
     data1 = NoaaNceiWeather::DataCategory.where(limit: 5, offset: 5)
     assert_not_equal data.first.id, data1.first.id, "offset param is not being passed to api through where method"
     assert_equal data.last.id, data1.first.id, "offset param is not being passed to api through where method"
+  end
+
+  test "where should take objects as params" do
+    datatype = NoaaNceiWeather::DataType.first
+    data0 = NoaaNceiWeather::DataCategory.where(datatypeid: datatype.id, limit: 1)
+    data1 = NoaaNceiWeather::DataCategory.where(datatype: datatype, limit: 1)
+    assert_equal data0.first.id, data1.first.id, "param passed object is not being passed to api correctly"
   end
 
   test "where should pass sort params and affect return data" do

@@ -1,10 +1,8 @@
-require './lib/noaa_ncei_weather'
-require 'test/unit'
 require 'helper'
 
 class TestConnection < Test::Unit::TestCase
   def setup
-    TestHelper.connection_setup
+    super
   end
 
   test "should throw exception if token not present" do
