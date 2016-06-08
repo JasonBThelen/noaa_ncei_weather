@@ -16,11 +16,11 @@ gem 'noaa_ncei_weather'
 
 And then execute:
 
-    `$ bundle`
+    $ bundle
 
 Or install it yourself as:
 
-    `$ gem install noaa_ncei_weather`
+    $ gem install noaa_ncei_weather
 
 ## Usage
 
