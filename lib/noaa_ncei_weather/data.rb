@@ -14,11 +14,8 @@ module NoaaNceiWeather
     def self.query(datasetid, startdate, enddate, params = {})
       params.merge!({datasetid: datasetid, startdate: startdate, enddate: enddate})
       data = Connection.request(@@endpoint, params)['results']
-      dslist = []
-      if data && data.any?
-        dslist = data.collect { |item| self.new(item) }
-      end
-      return dslist
+      dslist = data.collect { |item| self.new(item) } if data && data.any?
+      return dslist || []
     end
   end
 end

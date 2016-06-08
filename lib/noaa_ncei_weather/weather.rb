@@ -15,14 +15,8 @@ module NoaaNceiWeather
 
     def self.where(endpoint, params = {})
       data = Connection.request(endpoint, params)['results']
-      dslist = []
-      if data && data.any?
-        data.each do |dataset|
-          set = self.new(dataset)
-          dslist.push(set)
-        end
-      end
-      return dslist
+      dslist = data.collect { |item| self.new(item) } if data && data.any?
+      return dslist || []
     end
   end
 end
