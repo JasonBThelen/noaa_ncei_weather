@@ -18,4 +18,12 @@ class TestData < Test::Unit::TestCase
       data.all? {|item| Date.parse(item.date) == Date.parse(date) }
     end
   end
+
+  test "query should work when passing a dataset object" do
+    date = (Date.today - 30).iso8601
+    ds = NoaaNceiWeather::Dataset.find('GHCND')
+    data = NoaaNceiWeather::Data.query(ds, date, date)
+    assert data.kind_of?(Array), "query is not returning an array"
+    assert_equal data.first.class, NoaaNceiWeather::Data, "returned array contains objects of the wrong type"
+  end
 end
