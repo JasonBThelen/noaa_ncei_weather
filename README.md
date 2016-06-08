@@ -50,11 +50,13 @@ lc.locations # returns a collection of Location objects related to lc
 
 Parameters passed to the class methods are parsed before being sent to the NOAA API for convenience.
   1. Relationship parameters to another endpoint can be passed an object instance. For example:
+
     ```ruby
     lc = NoaaNceiWeather::LocationCategory.find('CITY') # an instance of LocationCategory
     NoaaNceiWeather::Location.where(locationcategoryid: lc.id) # Parameter shown on the NOAA API Docs
     NoaaNceiWeather::Location.where(locationcategory: lc) # alternative
     ```
+
   2. Date parameters shown in the NOAA parameters can be given as Ruby `Date`, `DateTime`, or `Time` instances rather than an ISO formatted string
 
 The /data endpoint and corresponding `Data` class is where most of the real data is stored. The NOAA API required parameters are required in the class method, while the rest are passed with a hash as with the other classes. This returns a collection of Data objects.
