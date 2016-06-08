@@ -9,12 +9,8 @@ module NoaaNceiWeather
 
     def self.request(endpoint, params = {})
       url = @@url + endpoint
-      begin
-        response = RestClient::Request.execute(method: 'get', url: url, headers: {token: @@token, params: params})
-        JSON.parse(response.body)
-      rescue RestClient::ExceptionWithResponse => err
-        err.response
-      end
+      response = RestClient::Request.execute(method: 'get', url: url, headers: {token: @@token, params: params})
+      JSON.parse(response.body)
     end
   end
 end

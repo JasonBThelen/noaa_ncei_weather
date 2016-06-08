@@ -32,6 +32,10 @@ module NoaaNceiWeather
       super(@@endpoint + "/#{id}")
     end
 
+    def self.find_by_zip(zip)
+      self.where(locationid: "ZIP:#{zip}")
+    end
+
     def self.where(params = {})
       super(@@endpoint, params)
     end

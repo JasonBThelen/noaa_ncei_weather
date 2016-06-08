@@ -1,5 +1,5 @@
 module NoaaNceiWeather
-  class Data < Weather
+  class Data
     @@endpoint = 'data'
     attr_reader :date, :datatype, :station, :attributes, :value
     def initialize(params)
@@ -10,8 +10,15 @@ module NoaaNceiWeather
       @value = params['value']
     end
 
-    def self.where(params = {})
-      super(@@endpoint, params)
+
+    def self.query(datasetid, startdate, enddate, params = {})
+      params.merge!({datasetid: datasetid, startdate: startdate, enddate: enddate})
+      data = Connection.request(@@endpoint, params)['results']
+      dslist = []
+      if data && data.any?
+        dslist = data.collect { |item| self.new(item) }
+      end
+      return dslist
     end
   end
 end
