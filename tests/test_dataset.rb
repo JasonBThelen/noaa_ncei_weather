@@ -17,6 +17,14 @@ class TestDataset < Test::Unit::TestCase
     assert_equal data.class, NoaaNceiWeather::Dataset, "Object returned is not of the correct type"
   end
 
+  test "object should have all it's properties" do
+    data = NoaaNceiWeather::Dataset.first
+    variables = data.instance_variables
+    assert_block do
+      variables.all? {|var| data.instance_variable_get(var)}
+    end
+  end
+
   test "where should pass params and affect return data" do
     data = NoaaNceiWeather::Dataset.where(limit: 5)
     assert_equal data.length, 5, "limit param is not being passed to api through where method"

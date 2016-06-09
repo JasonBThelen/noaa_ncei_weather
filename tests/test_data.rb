@@ -26,4 +26,16 @@ class TestData < Test::Unit::TestCase
     assert data.kind_of?(Array), "query is not returning an array"
     assert_equal data.first.class, NoaaNceiWeather::Data, "returned array contains objects of the wrong type"
   end
+
+  test "object should have all it's properties" do
+    date = (Date.today - 30).iso8601
+    ds = NoaaNceiWeather::Dataset.find('GHCND')
+    data = NoaaNceiWeather::Data.query(ds, date, date, {limit: 1}).first
+    variables = data.instance_variables
+    assert_block do
+      variables.all? {|var| data.instance_variable_get(var)}
+    end
+  end
+
+
 end

@@ -10,7 +10,7 @@ module NoaaNceiWeather
       @name = params['name']
       @datacoverage = params['datacoverage']
       @id = params['id']
-      @elevationunit = params['elevationunit']
+      @elevationunit = params['elevationUnit']
     end
 
     def data_sets(params = {})

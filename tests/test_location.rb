@@ -17,6 +17,14 @@ class TestLocation < Test::Unit::TestCase
     assert_equal data.class, NoaaNceiWeather::Location, "Object returned is not of the correct type"
   end
 
+  test "object should have all it's properties" do
+    data = NoaaNceiWeather::Location.first
+    variables = data.instance_variables
+    assert_block do
+      variables.all? {|var| data.instance_variable_get(var)}
+    end
+  end
+
   test "find should return one object with same id as specified" do
     data = NoaaNceiWeather::Location.first
     single = NoaaNceiWeather::Location.find(data.id)
