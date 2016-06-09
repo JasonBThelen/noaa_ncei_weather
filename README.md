@@ -59,6 +59,16 @@ Parameters passed to the class methods are parsed before being sent to the NOAA 
 
   2. Date parameters shown in the NOAA parameters can be given as Ruby `Date`, `DateTime`, or `Time` instances rather than an ISO formatted string
 
+Limit is a parameter available to all the NOAA endpoints. Limit is being handled in the query so you can exceed the documented NOAA limit of a maximum 1000 per query. The `.all` method will return all of the available records, even if there are more than 1000. You may also set a limit of something over 1000 and that number will be returned to you. For example:
+
+```ruby
+data = NoaaNceiWeather::DataType.all
+data.count # => 1461 - the current count as of this writing
+data = NoaaNceiWeather::DataType.where(limit: 1200)
+data.count # => 1200 - passing a 1200 limit to the noaa api directly would raise a bad request error
+```
+
+
 The /data endpoint and corresponding `Data` class is where most of the real data is stored. The NOAA API required parameters are required in the class method, while the rest are passed with a hash as with the other classes. This returns a collection of Data objects.
 
 ```ruby
