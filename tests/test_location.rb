@@ -5,12 +5,7 @@ class TestLocation < Test::Unit::TestCase
     super
   end
 
-  test "all should return an array of objects" do
-    data = NoaaNceiWeather::Location.all
-    assert_not_nil data, "data category .all class method returning nil"
-    assert data.kind_of?(Array), "data category .all is returning an empty array"
-    assert_equal data.first.class, NoaaNceiWeather::Location, "Object returned is not of the correct type"
-  end
+  # Removed .all test due to the volume of records it would return
 
   test "first should return one object" do
     data = NoaaNceiWeather::Location.first
@@ -46,8 +41,13 @@ class TestLocation < Test::Unit::TestCase
     assert_equal data.last.id, data1.first.id, "offset param is not being passed to api through where method"
   end
 
+  test "limit over 1000 should return same number of objects" do
+    data = NoaaNceiWeather::Location.where(limit: 1005) #there are more than 1005 records here
+    assert_equal data.count, 1005, "limit is not returning correct amount of records"
+  end
+
   test "where should pass sort params and affect return data" do
-    data = NoaaNceiWeather::Location.where(sortfield: 'id', sortorder: 'desc')
+    data = NoaaNceiWeather::Location.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
   end
 

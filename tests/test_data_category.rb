@@ -10,6 +10,8 @@ class TestDataCategory < Test::Unit::TestCase
     assert_not_nil data, "data category .all class method returning nil"
     assert data.kind_of?(Array), "data category .all is returning an empty array"
     assert_equal data.first.class, NoaaNceiWeather::DataCategory, "Object returned is not of the correct type"
+    total = NoaaNceiWeather::Connection.request('datacategories')['metadata']['resultset']['count']
+    assert_equal data.count, total, "all is returning a different amount than the total"
   end
 
   test "first should return one object" do
@@ -41,8 +43,15 @@ class TestDataCategory < Test::Unit::TestCase
   end
 
   test "where should pass sort params and affect return data" do
-    data = NoaaNceiWeather::DataCategory.where(sortfield: 'id', sortorder: 'desc')
+    data = NoaaNceiWeather::DataCategory.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
+  end
+
+  test "where should return all of the records if limit is greater" do
+    data = NoaaNceiWeather::DataCategory.where(limit: 200)
+    total = NoaaNceiWeather::Connection.request('datacategories')['metadata']['resultset']['count']
+    assert_equal data.count, total, "setting limit above total records is returning something other than the total number of records"
+
   end
 
   test "find should return a single object with the queried id" do

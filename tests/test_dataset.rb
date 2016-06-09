@@ -10,6 +10,8 @@ class TestDataset < Test::Unit::TestCase
     assert_not_nil data, "data category .all class method returning nil"
     assert data.kind_of?(Array), "data category .all is returning an empty array"
     assert_equal data.first.class, NoaaNceiWeather::Dataset, "Object returned is not of the correct type"
+    total = NoaaNceiWeather::Connection.request('datasets')['metadata']['resultset']['count']
+    assert_equal data.count, total, "all is returning a different amount than the total"
   end
 
   test "first should return one object" do
@@ -34,7 +36,7 @@ class TestDataset < Test::Unit::TestCase
   end
 
   test "where should pass sort params and affect return data" do
-    data = NoaaNceiWeather::Dataset.where(sortfield: 'id', sortorder: 'desc')
+    data = NoaaNceiWeather::Dataset.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
   end
 

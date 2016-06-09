@@ -14,9 +14,19 @@ module NoaaNceiWeather
     end
 
     def self.where(endpoint, params = {})
+      limit = params[:limit] || Float::INFINITY
       params = self.parse_params(params)
-      data = Connection.request(endpoint, params)['results']
-      dslist = data.collect { |item| self.new(item) } if data && data.any?
+      output = []
+      begin
+        response = Connection.request(endpoint, params)
+        meta = response['metadata']['resultset']
+        output.concat response['results']
+        count = meta['offset'] + meta['limit'] - 1
+        params[:offset] = count + 1
+        params[:limit] = limit - count if (limit - count) < 1000
+      end while count < meta['count'] && count < limit && limit > 1000
+
+      dslist = output.collect { |item| self.new(item) } if output && output.any?
       return dslist || []
     end
 
@@ -33,6 +43,9 @@ module NoaaNceiWeather
       dates.each do |date|
         params[date] = params[date].iso8601 if params[date].respond_to?(:iso8601)
       end
+
+      # Prep for handling requests for over the 1k NOAA limit
+      params[:limit] = 1000 unless params[:limit] && params[:limit] < 1000
 
       #return modified params
       params

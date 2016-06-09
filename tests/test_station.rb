@@ -5,12 +5,7 @@ class TestStation < Test::Unit::TestCase
     super
   end
 
-  test "all should return an array of objects" do
-    data = NoaaNceiWeather::Station.all
-    assert_not_nil data, ".all class method returning nil"
-    assert data.kind_of?(Array), ".all not returning an array"
-    assert_equal data.first.class, NoaaNceiWeather::Station, "Object returned is not of the correct type"
-  end
+  # Removed .all test due to volume of records
 
   test "first should return one object" do
     data = NoaaNceiWeather::Station.first
@@ -48,7 +43,7 @@ class TestStation < Test::Unit::TestCase
   end
 
   test "where should pass sort params and affect return data" do
-    data = NoaaNceiWeather::Station.where(sortfield: 'id', sortorder: 'desc')
+    data = NoaaNceiWeather::Station.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
   end
 
