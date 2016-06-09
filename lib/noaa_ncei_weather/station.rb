@@ -7,6 +7,7 @@ module NoaaNceiWeather
       @mindate = Date.parse(params['mindate'])
       @maxdate = Date.parse(params['maxdate'])
       @latitude = params['latitude']
+      @longitude = params['longitude']
       @name = params['name']
       @datacoverage = params['datacoverage']
       @id = params['id']
