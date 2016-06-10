@@ -5,7 +5,7 @@ class TestDataset < Test::Unit::TestCase
     super
   end
 
-  test "all should return an array of objects" do
+  def test_all
     sleep 1
     data = NoaaNceiWeather::Dataset.all
     assert_not_nil data, "data category .all class method returning nil"
@@ -16,13 +16,13 @@ class TestDataset < Test::Unit::TestCase
     assert_equal data.count, total, "all is returning a different amount than the total"
   end
 
-  test "first should return one object" do
+  def test_first
     sleep 1
     data = NoaaNceiWeather::Dataset.first
     assert_equal data.class, NoaaNceiWeather::Dataset, "Object returned is not of the correct type"
   end
 
-  test "object should have all it's properties" do
+  def test_properties
     sleep 1
     data = NoaaNceiWeather::Dataset.first
     variables = data.instance_variables
@@ -31,7 +31,7 @@ class TestDataset < Test::Unit::TestCase
     end
   end
 
-  test "where should pass params and affect return data" do
+  def test_where
     sleep 1
     data = NoaaNceiWeather::Dataset.where(limit: 5)
     assert_equal data.length, 5, "limit param is not being passed to api through where method"
@@ -41,13 +41,13 @@ class TestDataset < Test::Unit::TestCase
     assert_equal data.last.id, data1.first.id, "offset param is not being passed to api through where method"
   end
 
-  test "where should pass sort params and affect return data" do
+  def test_where_params
     sleep 1
     data = NoaaNceiWeather::Dataset.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
   end
 
-  test "find should return a single object with the queried id" do
+  def test_find
     sleep 1
     data = NoaaNceiWeather::Dataset.first
     sleep 1
@@ -56,7 +56,7 @@ class TestDataset < Test::Unit::TestCase
     assert_equal single.id, data.id, "find returning object with the wrong id"
   end
 
-  test "data_categories method should return an array of data category objects" do
+  def test_data_categories
     sleep 1
     single = NoaaNceiWeather::Dataset.first
     relation = single.data_categories
@@ -64,7 +64,7 @@ class TestDataset < Test::Unit::TestCase
     assert_equal relation.first.class, NoaaNceiWeather::DataCategory, "objects returned are not of correct type"
   end
 
-  test "data_types method should return an array of data type objects" do
+  def test_data_types
     sleep 1
     single = NoaaNceiWeather::Dataset.first
     relation = single.data_types
@@ -72,7 +72,7 @@ class TestDataset < Test::Unit::TestCase
     assert_equal relation.first.class, NoaaNceiWeather::DataType, "objects returned are not of correct type"
   end
 
-  test "location_categories method should return an array of location category objects" do
+  def test_location_categories
     sleep 1
     single = NoaaNceiWeather::Dataset.first
     relation = single.location_categories
@@ -80,7 +80,7 @@ class TestDataset < Test::Unit::TestCase
     assert_equal relation.first.class, NoaaNceiWeather::LocationCategory, "objects returned are not of correct type"
   end
 
-  test "locations method should return an array of location objects" do
+  def test_locations
     sleep 1
     single = NoaaNceiWeather::Dataset.first
     relation = single.locations
@@ -88,7 +88,7 @@ class TestDataset < Test::Unit::TestCase
     assert_equal relation.first.class, NoaaNceiWeather::Location, "objects returned are not of correct type"
   end
 
-  test "stations method should return an array of station objects" do
+  def test_stations
     sleep 1
     single = NoaaNceiWeather::Dataset.first
     relation = single.stations

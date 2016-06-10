@@ -7,13 +7,13 @@ class TestLocation < Test::Unit::TestCase
 
   # Removed .all test due to the volume of records it would return
 
-  test "first should return one object" do
+  def test_first
     sleep 1
     data = NoaaNceiWeather::Location.first
     assert_equal data.class, NoaaNceiWeather::Location, "Object returned is not of the correct type"
   end
 
-  test "object should have all it's properties" do
+  def test_properties
     sleep 1
     data = NoaaNceiWeather::Location.first
     variables = data.instance_variables
@@ -22,7 +22,7 @@ class TestLocation < Test::Unit::TestCase
     end
   end
 
-  test "find should return one object with same id as specified" do
+  def test_find
     sleep 1
     data = NoaaNceiWeather::Location.first
     sleep 1
@@ -31,14 +31,14 @@ class TestLocation < Test::Unit::TestCase
     assert_equal single.id, data.id, "find did not return the correct record"
   end
 
-  test "find_by_zip should return a location with the correct id" do
+  def test_find_by_zip
     sleep 1
     single = NoaaNceiWeather::Location.find_by_zip('99645') #Good ole' Alaska
     assert_equal single.class, NoaaNceiWeather::Location, "Object returned is not of the correct type"
     assert_equal single.id, 'ZIP:99645', "object returned has the wrong id"
   end
 
-  test "where should pass params and affect return data" do
+  def test_where
     sleep 1
     data = NoaaNceiWeather::Location.where(limit: 5)
     assert_equal data.length, 5, "limit param is not being passed to api through where method"
@@ -48,19 +48,19 @@ class TestLocation < Test::Unit::TestCase
     assert_equal data.last.id, data1.first.id, "offset param is not being passed to api through where method"
   end
 
-  test "limit over 1000 should return same number of objects" do
+  def test_where_limit
     sleep 1
     data = NoaaNceiWeather::Location.where(limit: 1005) #there are more than 1005 records here
     assert_equal data.count, 1005, "limit is not returning correct amount of records"
   end
 
-  test "where should pass sort params and affect return data" do
+  def test_where_params
     sleep 1
     data = NoaaNceiWeather::Location.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
   end
 
-  test "data_sets method should return an array of dataset objects" do
+  def test_data_sets
     sleep 1
     single = NoaaNceiWeather::Location.first
     sleep 1
@@ -69,7 +69,7 @@ class TestLocation < Test::Unit::TestCase
     assert_equal relation.first.class, NoaaNceiWeather::Dataset, "objects returned are not of correct type"
   end
 
-  test "data_categories method should return an array of data_category objects" do
+  def test_data_categories
     sleep 1
     single = NoaaNceiWeather::Location.first
     sleep 1
@@ -78,7 +78,7 @@ class TestLocation < Test::Unit::TestCase
     assert_equal relation.first.class, NoaaNceiWeather::DataCategory, "objects returned are not of correct type"
   end
 
-  test "data_types method should return an array of data_type objects" do
+  def test_data_types
     sleep 1
     single = NoaaNceiWeather::Location.first
     sleep 1
@@ -87,7 +87,7 @@ class TestLocation < Test::Unit::TestCase
     assert_equal relation.first.class, NoaaNceiWeather::DataType, "objects returned are not of correct type"
   end
 
-  test "stations method should return an array of station objects" do
+  def test_stations
     sleep 1
     single = NoaaNceiWeather::Location.first
     sleep 1

@@ -5,7 +5,7 @@ class TestDataCategory < Test::Unit::TestCase
     super
   end
 
-  test "all should return an array of objects" do
+  def test_all
     sleep(1)
     data = NoaaNceiWeather::DataCategory.all
     assert_not_nil data, "data category .all class method returning nil"
@@ -16,13 +16,13 @@ class TestDataCategory < Test::Unit::TestCase
     assert_equal data.count, total, "all is returning a different amount than the total"
   end
 
-  test "first should return one object" do
+  def test_first
     sleep 1
     data = NoaaNceiWeather::DataCategory.first
     assert_equal data.class, NoaaNceiWeather::DataCategory, "Object returned is not of the correct type"
   end
 
-  test "object should have all it's properties" do
+  def test_properties
     sleep 1
     data = NoaaNceiWeather::DataCategory.first
     variables = data.instance_variables
@@ -31,7 +31,7 @@ class TestDataCategory < Test::Unit::TestCase
     end
   end
 
-  test "where should pass params and affect return data" do
+  def test_params
     sleep 1
     data = NoaaNceiWeather::DataCategory.where(limit: 5)
     assert_equal data.length, 5, "limit param is not being passed to api through where method"
@@ -41,7 +41,7 @@ class TestDataCategory < Test::Unit::TestCase
     assert_equal data.last.id, data1.first.id, "offset param is not being passed to api through where method"
   end
 
-  test "where should take objects as params" do
+  def test_object_params
     sleep 1
     datatype = NoaaNceiWeather::DataType.first
     sleep 1
@@ -51,13 +51,13 @@ class TestDataCategory < Test::Unit::TestCase
     assert_equal data0.first.id, data1.first.id, "param passed object is not being passed to api correctly"
   end
 
-  test "where should pass sort params and affect return data" do
+  def test_where
     sleep 1
     data = NoaaNceiWeather::DataCategory.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
   end
 
-  test "where should return all of the records if limit is greater" do
+  def test_where_count
     sleep 1
     data = NoaaNceiWeather::DataCategory.where(limit: 200)
     sleep 1
@@ -66,7 +66,7 @@ class TestDataCategory < Test::Unit::TestCase
 
   end
 
-  test "find should return a single object with the queried id" do
+  def test_find
     sleep 1
     data = NoaaNceiWeather::DataCategory.first
     sleep 1
@@ -75,7 +75,7 @@ class TestDataCategory < Test::Unit::TestCase
     assert_equal dc.id, data.id, "find returning object with the wrong id"
   end
 
-  test "data_types method should return an array of data type objects" do
+  def test_data_types
     sleep 1
     dc = NoaaNceiWeather::DataCategory.first
     dts = dc.data_types
@@ -83,7 +83,7 @@ class TestDataCategory < Test::Unit::TestCase
     assert_equal dts.first.class, NoaaNceiWeather::DataType, "objects returned are not of correct type"
   end
 
-  test "locations method should return an array of location objects" do
+  def test_locations
     sleep 1
     dc = NoaaNceiWeather::DataCategory.first
     lcs = dc.locations
@@ -91,7 +91,7 @@ class TestDataCategory < Test::Unit::TestCase
     assert_equal lcs.first.class, NoaaNceiWeather::Location, "objects returned are not of correct type"
   end
 
-  test "stations method should return an array of station objects" do
+  def test_stations
     sleep 1
     dc = NoaaNceiWeather::DataCategory.first
     sts = dc.stations

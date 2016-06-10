@@ -5,7 +5,7 @@ class TestLocationCategory < Test::Unit::TestCase
     super
   end
 
-  test "all should return an array of objects" do
+  def test_all
     sleep 1
     data = NoaaNceiWeather::LocationCategory.all
     assert_not_nil data, "data category .all class method returning nil"
@@ -16,13 +16,13 @@ class TestLocationCategory < Test::Unit::TestCase
     assert_equal data.count, total, "all is returning a different amount than the total"
 end
 
-  test "first should return one object" do
+  def test_first
     sleep 1
     data = NoaaNceiWeather::LocationCategory.first
     assert_equal data.class, NoaaNceiWeather::LocationCategory, "Object returned is not of the correct type"
   end
 
-  test "object should have all it's properties" do
+  def test_properties
     sleep 1
     data = NoaaNceiWeather::LocationCategory.first
     variables = data.instance_variables
@@ -31,7 +31,7 @@ end
     end
   end
 
-  test "where should pass params and affect return data" do
+  def test_where
     sleep 1
     data = NoaaNceiWeather::LocationCategory.where(limit: 5)
     assert_equal data.length, 5, "limit param is not being passed to api through where method"
@@ -41,13 +41,13 @@ end
     assert_equal data.last.id, data1.first.id, "offset param is not being passed to api through where method"
   end
 
-  test "where should pass sort params and affect return data" do
+  def test_where_params
     sleep 1
     data = NoaaNceiWeather::LocationCategory.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
   end
 
-  test "locations method should return an array of location objects" do
+  def test_locations
     sleep 1
     single = NoaaNceiWeather::LocationCategory.first
     sleep 1

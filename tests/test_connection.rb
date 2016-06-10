@@ -5,7 +5,7 @@ class TestConnection < Test::Unit::TestCase
     super
   end
 
-  test "should throw exception if token not present" do
+  def test_request_without_token
     NoaaNceiWeather::Connection.token = ''
     assert_raise RestClient::BadRequest do
       NoaaNceiWeather::Connection.request('locationcategories')

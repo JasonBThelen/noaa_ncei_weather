@@ -5,7 +5,7 @@ class TestDataType < Test::Unit::TestCase
     super
   end
 
-  test ".all should return an array of objects" do
+  def test_all
     sleep 1
     data = NoaaNceiWeather::DataType.all
     assert_not_nil data, "data type .all class method returning nil"
@@ -16,13 +16,13 @@ class TestDataType < Test::Unit::TestCase
     assert_equal data.count, total, "all is returning a different amount than the total"
   end
 
-  test ".first should return one object" do
+  def test_first
     sleep 1
     data = NoaaNceiWeather::DataType.first
     assert_equal data.class, NoaaNceiWeather::DataType, "Object returned is not of the correct type"
   end
 
-  test "object should have all it's properties" do
+  def test_properties
     sleep 1
     data = NoaaNceiWeather::DataType.first
     variables = data.instance_variables
@@ -31,7 +31,7 @@ class TestDataType < Test::Unit::TestCase
     end
   end
 
-  test ".where should pass params and affect return data" do
+  def test_where
     sleep 1
     data = NoaaNceiWeather::DataType.where(limit: 5)
     assert_equal data.length, 5, "limit param is not being passed to api through where method"
@@ -41,19 +41,19 @@ class TestDataType < Test::Unit::TestCase
     assert_equal data.last.id, data1.first.id, "offset param is not being passed to api through where method"
   end
 
-  test "where should pass sort params and affect return data" do
+  def test_params
     sleep 1
     data = NoaaNceiWeather::DataType.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
   end
 
-  test "where should accept a limit over the noaa limit" do
+  def test_where_limit
     sleep 1
     data = NoaaNceiWeather::DataType.where(limit: 1005) # there are more than 1005 records here
     assert_equal data.count, 1005, "count returned is different from the limit"
   end
 
-  test "find should return a single object with the queried id" do
+  def test_find
     sleep 1
     data = NoaaNceiWeather::DataType.first
     sleep 1
@@ -62,14 +62,14 @@ class TestDataType < Test::Unit::TestCase
     assert_equal dc.id, data.id, "find returning object with the wrong id"
   end
 
-  test ".dataset method should return a dataset object" do
+  def test_dataset
     sleep 1
     dt = NoaaNceiWeather::DataType.first
     ds = dt.dataset
     assert_equal ds.class, NoaaNceiWeather::Dataset, "object returned are not of correct type"
   end
 
-  test "stations method should return an array of station objects" do
+  def test_stations
     sleep 1
     dt = NoaaNceiWeather::DataType.first
     sts = dt.stations

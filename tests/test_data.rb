@@ -5,14 +5,14 @@ class TestData < Test::Unit::TestCase
     super
   end
 
-  test "query should return an array of data objects" do
+  def test_query
     sleep 1
     data = NoaaNceiWeather::Data.query('GHCND', (Date.today - 30).iso8601, (Date.today - 29).iso8601)
     assert data.kind_of?(Array), "query is not returning an array"
     assert data.first.kind_of?(NoaaNceiWeather::Data), "returned array contains objects of the wrong type"
   end
 
-  test "query should return records within date range given" do
+  def test_query_dates
     date = (Date.today - 30).iso8601
     sleep 1
     data = NoaaNceiWeather::Data.query('GHCNDMS', date , date, limit: 5)
@@ -21,7 +21,7 @@ class TestData < Test::Unit::TestCase
     end
   end
 
-  test "query should work when passing a dataset object" do
+  def test_query_object_params
     date = (Date.today - 30).iso8601
     sleep 1
     ds = NoaaNceiWeather::Dataset.find('GHCND')
@@ -31,7 +31,7 @@ class TestData < Test::Unit::TestCase
     assert_equal data.first.class, NoaaNceiWeather::Data, "returned array contains objects of the wrong type"
   end
 
-  test "object should have all it's properties" do
+  def test_properties
     date = (Date.today - 30).iso8601
     sleep 1
     ds = NoaaNceiWeather::Dataset.find('GHCND')
