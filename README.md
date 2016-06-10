@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/JasonBThelen/noaa_ncei_weather.svg?branch=master)](https://travis-ci.org/JasonBThelen/noaa_ncei_weather)
+
 # NOAA NCEI Weather
 
 Ruby wrapper to the NOAA NCEI Weather API at [ncdc.noaa.gov](http://www.ncdc.noaa.gov/cdo-web/webservices/v2)
