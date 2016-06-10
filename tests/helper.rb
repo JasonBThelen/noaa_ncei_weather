@@ -1,6 +1,6 @@
 require './lib/noaa_ncei_weather'
 require 'test/unit'
-require './tests/env.rb' if File.exist?('./tests/env.rb')
+require './env.rb' if File.exist?('./env.rb')
 
 class Test::Unit::TestCase
 
