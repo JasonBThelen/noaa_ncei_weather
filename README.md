@@ -76,7 +76,7 @@ The /data endpoint and corresponding `Data` class is where most of the real data
 ```ruby
 ds = NoaaNceiWeather::Dataset.first
 date = Date.today - 14
-data = NoaaNceiWeather::Data.query(ds, date, date, {offset: 0})
+data = NoaaNceiWeather::Data.where(ds, date, date, {offset: 0})
 ```
 
 
