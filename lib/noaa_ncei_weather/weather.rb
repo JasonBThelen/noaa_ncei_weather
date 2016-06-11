@@ -6,11 +6,20 @@ module NoaaNceiWeather
 
     def self.find(endpoint)
       data = Connection.request(endpoint)
-      self.new(data)
+      if data.any?
+        self.new(data)
+      else
+        nil
+      end
     end
 
     def self.first
-      self.where(limit: 1).first
+      data = self.where(limit: 1)
+      if data.any?
+        data.first
+      else
+        nil
+      end
     end
 
     def self.where(endpoint, params = {})
@@ -19,6 +28,7 @@ module NoaaNceiWeather
       output = []
       begin
         response = Connection.request(endpoint, params)
+        break unless response.any?
         meta = response['metadata']['resultset']
         output.concat response['results']
         count = meta['offset'] + meta['limit'] - 1
