@@ -31,6 +31,12 @@ class TestLocation < Test::Unit::TestCase
     assert_equal single.id, data.id, "find did not return the correct record"
   end
 
+  def test_find_invalid
+    sleep 1
+    data = NoaaNceiWeather::Location.find('INVALID')
+    assert_nil data, "passing an invalid id to find should result in nil"
+  end
+
   def test_find_by_zip
     sleep 1
     single = NoaaNceiWeather::Location.find_by_zip('99645') #Good ole' Alaska
@@ -58,6 +64,12 @@ class TestLocation < Test::Unit::TestCase
     sleep 1
     data = NoaaNceiWeather::Location.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
+  end
+
+  def test_where_invalid
+    sleep 1
+    data = NoaaNceiWeather::Location.where(datasetid: 'INVALID')
+    refute data.any?, "invalid parameter values should result in an empty array"
   end
 
   def test_data_sets

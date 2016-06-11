@@ -63,7 +63,12 @@ class TestDataCategory < Test::Unit::TestCase
     sleep 1
     total = NoaaNceiWeather::Connection.request('datacategories')['metadata']['resultset']['count']
     assert_equal data.count, total, "setting limit above total records is returning something other than the total number of records"
+  end
 
+  def test_where_invalid
+    sleep 1
+    data = NoaaNceiWeather::DataCategory.where(datasetid: 'INVALID')
+    refute data.any?, "invalid where params should result in an empty array"
   end
 
   def test_find
@@ -73,6 +78,7 @@ class TestDataCategory < Test::Unit::TestCase
     dc = NoaaNceiWeather::DataCategory.find(data.id)
     assert_equal dc.class, NoaaNceiWeather::DataCategory, "find not returning correct object type"
     assert_equal dc.id, data.id, "find returning object with the wrong id"
+    assert_nil NoaaNceiWeather::DataCategory.find('INVALID'), "an invalid id should return nil"
   end
 
   def test_data_types

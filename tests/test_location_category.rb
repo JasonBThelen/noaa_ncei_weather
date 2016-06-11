@@ -31,6 +31,21 @@ end
     end
   end
 
+  def test_find
+    sleep 1
+    data = NoaaNceiWeather::LocationCategory.first
+    sleep 1
+    single = NoaaNceiWeather::LocationCategory.find(data.id)
+    assert_equal single.class, NoaaNceiWeather::LocationCategory, "find not returning correct object type"
+    assert_equal single.id, data.id, "find returning object with the wrong id"
+  end
+
+  def test_find_invalid
+    sleep 1
+    data = NoaaNceiWeather::LocationCategory.find('INVALID')
+    assert_nil data, "passing an invalid id to find should result in nil"
+  end
+
   def test_where
     sleep 1
     data = NoaaNceiWeather::LocationCategory.where(limit: 5)
@@ -45,6 +60,12 @@ end
     sleep 1
     data = NoaaNceiWeather::LocationCategory.where(sortfield: 'id', sortorder: 'desc', limit: 2)
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
+  end
+
+  def test_where_invalid
+    sleep 1
+    data = NoaaNceiWeather::LocationCategory.where(datasetid: 'INVALID')
+    refute data.any?, "invalid parameter values should result in an empty array"
   end
 
   def test_locations

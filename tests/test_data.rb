@@ -5,30 +5,54 @@ class TestData < Test::Unit::TestCase
     super
   end
 
-  def test_query
+  def test_all
+    data = NoaaNceiWeather::Data.all
+    refute data.any?, "all should not return any records"
+  end
+
+  def test_first
+    data = NoaaNceiWeather::Data.first
+    assert_nil data, "first should return nil"
+  end
+
+  def test_find
+    data = NoaaNceiWeather::Data.find('id')
+    assert_nil data, "find should return nil"
+  end
+
+  def test_where
     sleep 1
-    data = NoaaNceiWeather::Data.query('GHCND', (Date.today - 30).iso8601, (Date.today - 29).iso8601)
-    assert data.kind_of?(Array), "query is not returning an array"
+    data = NoaaNceiWeather::Data.where('GHCND', (Date.today - 30).iso8601, (Date.today - 29).iso8601, {limit: 5})
+    assert data.kind_of?(Array), "where is not returning an array"
     assert data.first.kind_of?(NoaaNceiWeather::Data), "returned array contains objects of the wrong type"
   end
 
-  def test_query_dates
-    date = (Date.today - 30).iso8601
+  def test_where_dates
+    date = (Date.today - 30)
     sleep 1
-    data = NoaaNceiWeather::Data.query('GHCNDMS', date , date, limit: 5)
+    data = NoaaNceiWeather::Data.where('GHCND', date.iso8601, date.iso8601, {limit: 5})
     assert_block do
-      data.all? {|item| Date.parse(item.date) == Date.parse(date) }
+      data.all? {|item| item.date == date }
     end
   end
 
-  def test_query_object_params
+  def test_where_object_params
     date = (Date.today - 30).iso8601
     sleep 1
     ds = NoaaNceiWeather::Dataset.find('GHCND')
     sleep 1
-    data = NoaaNceiWeather::Data.query(ds, date, date, limit: 5)
-    assert data.kind_of?(Array), "query is not returning an array"
+    data = NoaaNceiWeather::Data.where(ds, date, date, limit: 5)
+    assert data.kind_of?(Array), "where is not returning an array"
     assert_equal data.first.class, NoaaNceiWeather::Data, "returned array contains objects of the wrong type"
+  end
+
+  def test_where_no_results
+    date = (Date.today - 30).iso8601
+    sleep 1
+    # refute data.any?, "invalid parameter should result in empty array"
+    assert_raises RestClient::InternalServerError do
+      NoaaNceiWeather::Data.where('INVALID', date, date, limit: 5)
+    end
   end
 
   def test_properties
@@ -36,7 +60,7 @@ class TestData < Test::Unit::TestCase
     sleep 1
     ds = NoaaNceiWeather::Dataset.find('GHCND')
     sleep 1
-    data = NoaaNceiWeather::Data.query(ds, date, date, {limit: 1}).first
+    data = NoaaNceiWeather::Data.where(ds, date, date, {limit: 1}).first
     variables = data.instance_variables
     assert_block do
       variables.all? {|var| data.instance_variable_get(var)}

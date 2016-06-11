@@ -31,6 +31,12 @@ class TestStation < Test::Unit::TestCase
     assert_equal single.id, data.id
   end
 
+  def test_find_invalid
+    sleep 1
+    data = NoaaNceiWeather::Station.find('INVALID')
+    assert_nil data, "passing an invalid id to find should result in nil"
+  end
+
   def test_find_by_zip
     sleep 1
     data = NoaaNceiWeather::Station.find_by_zip("99645")
@@ -62,6 +68,12 @@ class TestStation < Test::Unit::TestCase
     relation = single.data_sets
     assert relation.kind_of?(Array), "data_sets method is not returning an array"
     assert_equal relation.first.class, NoaaNceiWeather::Dataset, "objects returned are not of correct type"
+  end
+
+  def test_where_invalid
+    sleep 1
+    data = NoaaNceiWeather::Station.where(datatypeid: 'INVALID')
+    refute data.any?, "invalid parameter values should result in an empty array"
   end
 
   def test_data_categories

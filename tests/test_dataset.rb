@@ -47,6 +47,12 @@ class TestDataset < Test::Unit::TestCase
     assert data[0].id > data[1].id, "sortfield and sortorder params not being passed to api"
   end
 
+  def test_where_invalid
+    sleep 1
+    data = NoaaNceiWeather::Dataset.where(datatypeid: 'INVALID')
+    refute data.any?, "invalid parameter values should result in an empty array"
+  end
+
   def test_find
     sleep 1
     data = NoaaNceiWeather::Dataset.first
@@ -54,6 +60,12 @@ class TestDataset < Test::Unit::TestCase
     single = NoaaNceiWeather::Dataset.find(data.id)
     assert_equal single.class, NoaaNceiWeather::Dataset, "find not returning correct object type"
     assert_equal single.id, data.id, "find returning object with the wrong id"
+  end
+
+  def test_find_invalid
+    sleep 1
+    data = NoaaNceiWeather::Dataset.find('INVALID')
+    assert_nil data, "passing an invalid id to find should result in nil"
   end
 
   def test_data_categories
