@@ -36,6 +36,18 @@ class TestData < Test::Unit::TestCase
     end
   end
 
+  def test_date_large_range
+    date_start = Date.today - 400
+    date_end = Date.today - 10
+    sleep 1
+    data = NoaaNceiWeather::Data.where('GHCND', date_start, date_end, {stationid: 'GHCND:USC00505464'})
+    assert data.first.date == date_start, "first record returned should be from startdate"
+    assert data.last.date == date_end, "last record returned should be from enddate"
+    sleep 1
+    data = NoaaNceiWeather::Data.where('GHCND', date_start, date_end, {datatypeid: 'PRCP', stationid: 'GHCND:USC00505464', limit: 365})
+    assert_equal data.count, 365, "getting a different count than set limit"
+  end
+
   def test_where_object_params
     date = (Date.today - 30).iso8601
     sleep 1
