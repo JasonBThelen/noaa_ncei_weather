@@ -18,7 +18,7 @@ module NoaaNceiWeather
     #   @return [Date] Earliest availability of data in this set
     # @!attribute [r] maxdate
     #   @return [String] Latest availability of data in this set
-    attr_reader :uid, :mindate, :maxdate, :datacoverage,
+    attr_reader :uid, :mindate, :maxdate, :datacoverage
 
     # Creates new {DataType} object
     def initialize(id, uid, name, datacoverage, mindate, maxdate)

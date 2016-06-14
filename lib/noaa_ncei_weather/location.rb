@@ -74,6 +74,15 @@ module NoaaNceiWeather
       Station.where(params)
     end
 
+    # Find the {LocationCategory} that this Location belongs to
+    #
+    # @return [LocationCategory] {LocationCategory} object that this instance of
+    #   {Location} belongs to
+    def location_category
+      locationcategoryid = self.id.split(":")[0]
+      LocationCategory.find(locationcategoryid)
+    end
+
     # Finds a specific instance of {Location} by its ID
     #
     # @param id [String] String ID of the resource.

@@ -108,4 +108,13 @@ class TestLocation < Test::Unit::TestCase
     assert_equal relation.first.class, NoaaNceiWeather::Station, "objects returned are not of correct type"
   end
 
+  def test_location_category
+    sleep 1
+    single = NoaaNceiWeather::Location.first
+    sleep 1
+    relation = single.location_category
+    assert_not_nil relation, "should be returning an instance"
+    assert_equal relation.class, NoaaNceiWeather::LocationCategory, "should have a single LocationCategory"
+  end
+
 end
