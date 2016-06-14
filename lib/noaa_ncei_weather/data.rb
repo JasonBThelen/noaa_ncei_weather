@@ -1,25 +1,14 @@
 module NoaaNceiWeather
-  class Data < Weather
+  class Data
+    extend Connection
     @@endpoint = 'data'
     attr_reader :date, :datatype, :station, :attributes, :value
-    def initialize(params)
-      @date = Date.parse(params['date'])
-      @datatype = params['datatype']
-      @station = params['station']
-      @attributes = params['attributes']
-      @value = params['value']
-    end
-
-    def self.all(*args)
-      []
-    end
-
-    def self.find(*args)
-      nil
-    end
-
-    def self.first(*args)
-      nil
+    def initialize(date, datatype, station, attributes, value)
+      @date = date
+      @datatype = datatype
+      @station = station
+      @attributes = attributes
+      @value = value
     end
 
     def self.where(datasetid, startdate, enddate, params = {})
@@ -48,7 +37,7 @@ module NoaaNceiWeather
         params[:limit] = limit
         params[:offset] = nil
       end while to_date > startdate
-      output
+      output.collect {|item| self.new Date.parse(item['date']), item['datatype'], item['station'], item['attributes'], item['value']}
     end
   end
 end

@@ -5,21 +5,6 @@ class TestData < Test::Unit::TestCase
     super
   end
 
-  def test_all
-    data = NoaaNceiWeather::Data.all
-    refute data.any?, "all should not return any records"
-  end
-
-  def test_first
-    data = NoaaNceiWeather::Data.first
-    assert_nil data, "first should return nil"
-  end
-
-  def test_find
-    data = NoaaNceiWeather::Data.find('id')
-    assert_nil data, "find should return nil"
-  end
-
   def test_where
     sleep 1
     data = NoaaNceiWeather::Data.where('GHCND', (Date.today - 30).iso8601, (Date.today - 29).iso8601, {limit: 5})
