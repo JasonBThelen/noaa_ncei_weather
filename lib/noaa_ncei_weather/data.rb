@@ -3,8 +3,8 @@
 module NoaaNceiWeather
 
   # Class for querying against the /data endpoint of the
-  #   {http://www.ncdc.noaa.gov/cdo-web/webservices/v2 NOAA API}. This endpoint
-  #   gives access to the actual measurements taken.
+  # {http://www.ncdc.noaa.gov/cdo-web/webservices/v2 NOAA API}. This endpoint
+  # gives access to the actual measurements taken.
   class Data
     extend Connection
 
@@ -63,7 +63,7 @@ module NoaaNceiWeather
         params[:limit] = limit
         params[:offset] = nil
       end while to_date > startdate
-      output.collect {|item| self.new Date.parse(item['date']), item['datatype'], item['station'], item['attributes'], item['value']}
+      output.collect {|item| self.new DateTime.parse(item['date']), item['datatype'], item['station'], item['attributes'], item['value']}
     end
   end
 end

@@ -17,7 +17,7 @@ class TestData < Test::Unit::TestCase
     sleep 1
     data = NoaaNceiWeather::Data.where('GHCND', date.iso8601, date.iso8601, {limit: 5})
     assert_block do
-      data.all? {|item| item.date == date }
+      data.all? {|item| item.date.to_date == date }
     end
   end
 
@@ -26,8 +26,8 @@ class TestData < Test::Unit::TestCase
     date_end = Date.today - 10
     sleep 1
     data = NoaaNceiWeather::Data.where('GHCND', date_start, date_end, {stationid: 'GHCND:USC00505464'})
-    assert data.first.date == date_start, "first record returned should be from startdate"
-    assert data.last.date == date_end, "last record returned should be from enddate"
+    assert data.first.date.to_date == date_start, "first record returned should be from startdate"
+    assert data.last.date.to_date == date_end, "last record returned should be from enddate"
     sleep 1
     data = NoaaNceiWeather::Data.where('GHCND', date_start, date_end, {datatypeid: 'PRCP', stationid: 'GHCND:USC00505464', limit: 365})
     assert_equal data.count, 365, "getting a different count than set limit"
