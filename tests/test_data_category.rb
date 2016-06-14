@@ -12,7 +12,7 @@ class TestDataCategory < Test::Unit::TestCase
     assert data.kind_of?(Array), "data category .all is returning an empty array"
     assert_equal data.first.class, NoaaNceiWeather::DataCategory, "Object returned is not of the correct type"
     sleep 1
-    total = NoaaNceiWeather::Connection.request('datacategories')['metadata']['resultset']['count']
+    total = NoaaNceiWeather::DataCategory.request('datacategories')['metadata']['resultset']['count']
     assert_equal data.count, total, "all is returning a different amount than the total"
   end
 
@@ -61,7 +61,7 @@ class TestDataCategory < Test::Unit::TestCase
     sleep 1
     data = NoaaNceiWeather::DataCategory.where(limit: 200)
     sleep 1
-    total = NoaaNceiWeather::Connection.request('datacategories')['metadata']['resultset']['count']
+    total = NoaaNceiWeather::DataCategory.request('datacategories')['metadata']['resultset']['count']
     assert_equal data.count, total, "setting limit above total records is returning something other than the total number of records"
   end
 

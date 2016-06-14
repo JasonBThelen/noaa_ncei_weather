@@ -2,10 +2,6 @@ module NoaaNceiWeather
   class DataCategory < Weather
     @@endpoint = 'datacategories'
     attr_reader :name, :id
-    def initialize(params)
-      @name = params['name']
-      @id = params['id']
-    end
 
     def data_types(params = {})
       params.merge!({datacategoryid: @id})
@@ -23,11 +19,21 @@ module NoaaNceiWeather
     end
 
     def self.find(id)
-      super(@@endpoint + "/#{id}")
+      data = super(@@endpoint + "/#{id}")
+      if data && data.any?
+        self.new data['id'], data['name']
+      else
+        nil
+      end
     end
 
     def self.where(params = {})
-      super(@@endpoint, params)
+      data = super(@@endpoint, params)
+      if data && data.any?
+        data.collect { |item| self.new(item['id'], item['name']) }
+      else
+        []
+      end
     end
   end
 end

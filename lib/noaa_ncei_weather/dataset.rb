@@ -3,13 +3,12 @@ module NoaaNceiWeather
     @@endpoint = 'datasets'
     attr_reader :uid, :mindate, :maxdate, :name, :datacoverage, :id
 
-    def initialize(params)
-      @uid = params['uid']
-      @mindate = Date.parse(params['mindate'])
-      @maxdate = Date.parse(params['maxdate'])
-      @name = params['name']
-      @datacoverage = params['datacoverage']
-      @id = params['id']
+    def initialize(id, uid, name, datacoverage, mindate, maxdate)
+      super(id, name)
+      @uid = uid
+      @datacoverage = datacoverage
+      @mindate = mindate
+      @maxdate = maxdate
     end
 
     def data_categories(params = {})
@@ -38,11 +37,21 @@ module NoaaNceiWeather
     end
 
     def self.find(id)
-      super(@@endpoint + "/#{id}")
+      data = super(@@endpoint + "/#{id}")
+      if data && data.any?
+        self.new data['id'], data['uid'], data['name'], data['datacoverage'], Date.parse(data['mindate']), Date.parse(data['maxdate'])
+      else
+        nil
+      end
     end
 
     def self.where(params = {})
-      super(@@endpoint, params)
+      data = super(@@endpoint, params)
+      if data && data.any?
+        data.collect { |item| self.new item['id'], item['uid'], item['name'], item['datacoverage'], Date.parse(item['mindate']), Date.parse(item['maxdate']) }
+      else
+        []
+      end
     end
   end
 end

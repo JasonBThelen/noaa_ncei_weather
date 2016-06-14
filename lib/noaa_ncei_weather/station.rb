@@ -2,16 +2,15 @@ module NoaaNceiWeather
   class Station < Weather
     @@endpoint = 'stations'
     attr_reader :elevation, :mindate, :maxdate, :latitude, :name, :datacoverage, :id, :elevationunit, :longitude
-    def initialize(params)
-      @elevation = params['elevation']
-      @mindate = Date.parse(params['mindate'])
-      @maxdate = Date.parse(params['maxdate'])
-      @latitude = params['latitude']
-      @longitude = params['longitude']
-      @name = params['name']
-      @datacoverage = params['datacoverage']
-      @id = params['id']
-      @elevationunit = params['elevationUnit']
+    def initialize(id, name, datacoverage, mindate, maxdate, elevation, elevationUnit, latitude, longitude)
+      super(id, name)
+      @datacoverage = datacoverage
+      @mindate = mindate
+      @maxdate = maxdate
+      @elevation = elevation
+      @elevationunit = elevationUnit
+      @latitude = latitude
+      @longitude = longitude
     end
 
     def data_sets(params = {})
@@ -30,7 +29,12 @@ module NoaaNceiWeather
     end
 
     def self.find(id)
-      super(@@endpoint + "/#{id}")
+      data = super(@@endpoint + "/#{id}")
+      if data && data.any?
+        self.new data['id'], data['name'], data['datacoverage'], Date.parse(data['mindate']), Date.parse(data['maxdate']), data['elevation'], data['elevationUnit'], data['latitude'], data['longitude']
+      else
+        nil
+      end
     end
 
     def self.find_by_zip(zip)
@@ -38,7 +42,14 @@ module NoaaNceiWeather
     end
 
     def self.where(params = {})
-      super(@@endpoint, params)
+      data = super(@@endpoint, params)
+      if data && data.any?
+        data.collect do |item|
+          self.new item['id'], item['name'], item['datacoverage'], Date.parse(item['mindate']), Date.parse(item['maxdate']), item['elevation'], item['elevationUnit'], item['latitude'], item['longitude']
+        end
+      else
+        []
+      end
     end
   end
 end

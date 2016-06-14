@@ -2,22 +2,29 @@ module NoaaNceiWeather
   class LocationCategory < Weather
     @@endpoint = 'locationcategories'
     attr_reader :name, :id
-    def initialize(params)
-      @name = params['name']
-      @id = params['id']
-    end
 
     def locations(params = {})
       params.merge!({locationcategoryid: @id})
       Location.where(params)
     end
 
-    def self.where(params = {})
-      super(@@endpoint, params)
+    def self.find(id)
+      data = super(@@endpoint + "/#{id}")
+      if data && data.any?
+        self.new data['id'], data['name']
+      else
+        nil
+      end
     end
 
-    def self.find(id)
-      super(@@endpoint + "/#{id}")
+    def self.where(params = {})
+      data = super(@@endpoint, params)
+      if data && data.any?
+        data.collect {|item| self.new item['id'], item['name']}
+      else
+        []
+      end
     end
+
   end
 end
