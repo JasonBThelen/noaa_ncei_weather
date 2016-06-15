@@ -32,10 +32,29 @@ module NoaaNceiWeather
 
     # Retrieves a collection of {Data} objects based on the params given.
     #
-    # @param datasetid [String] A String ID for a Dataset from the NOAA DB
-    # @param startdate [Date] A Date for the first day of data you want
-    # @param enddate [Date] A Date for the last day of data you want
+    # @param datasetid [String, Dataset] A String ID for a Dataset or a DataSet
+    #   object from the NOAA DB.
+    # @param startdate [String, Date] A Date or ISO8601 formatted date string for
+    #   the earliest data that should be retrieved
+    # @param enddate [String, Date] A Date or ISO8601 formatted date string for
+    #   the latest data that should be retrieved
     # @param params [Hash] A hash including other params to pass as accepted by the NOAA API
+    # @option params [String] :datatypeid Specific data type within the selected
+    #   dataset that should be retrieved
+    # @option params [DataType] :datatype Alternative way to pass :datatypeid
+    # @option params [String] :locationid Restrict data to measurements from
+    #   stations in a locationid
+    # @option params [Location] :location Alternative way to pass :locationid
+    # @option params [String] :stationid Restrict data to measurements from a
+    #   specific station
+    # @option params [Station] :station Alternative way to pass :stationid
+    # @option params [String] :units ('metric') Accepts string 'standard' or 'metric'
+    #   to set the unit of measurement returned in the value
+    # @option params [String] :sortfield ('id') Accepts string values 'id', 'name,
+    #   'mindate', 'maxdate', and 'datacoverage' to sort data before being returned
+    # @option params [String] :sortorder ('asc') Accepts 'asc' or 'desc' for sort order
+    # @option params [Integer] :limit Set a limit to the amount of records returned
+    # @option params [Integer] :offset (0) Used to offset the result list
     # @return [Array<Data>] An array of Data objects
     def self.where(datasetid, startdate, enddate, params = {})
       datasetid = datasetid.id if datasetid.respond_to?(:id)

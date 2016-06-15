@@ -41,7 +41,7 @@ module NoaaNceiWeather
     # Retrieves the {Dataset Datasets} that this instance of {Dataset} has available.
     #   {Station} and {Dataset} have a many to many relationship.
     #
-    # @param params [Hash] Hash of parameters to filter data, any accepted by {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#datasets NOAA}
+    # @param params [Hash] See {DataSet#where} for valid key/values.
     # @return [Array<Dataset>] An array of {Dataset} objects that
     #   belong to this instance of {Dataset}
     def data_sets(params = {})
@@ -52,7 +52,7 @@ module NoaaNceiWeather
     # Retrieves the {DataCategory DataCategories} that this instance of {Station} has available.
     #   {Station} and {DataCategory} have a many to many relationship.
     #
-    # @param params [Hash] Hash of parameters to filter data, any accepted by {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#dataCategories NOAA}
+    # @param params [Hash] See {DataCategory#where} for valid key/values.
     # @return [Array<DataCategory>] An array of {DataCategory} objects that
     #   belong to this instance of {Station}
     def data_categories(params = {})
@@ -63,7 +63,7 @@ module NoaaNceiWeather
     # Retrieves the {DataType DataTypes} that this instance of {Station} has available.
     #   {Station} and {DataType} have a many to many relationship.
     #
-    # @param params [Hash] Hash of parameters to filter data, any accepted by {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#dataTypes NOAA}
+    # @param params [Hash] See {DataType#where} for valid key/values.
     # @return [Array<DataType>] An array of {DataType} objects that
     #   belong to this instance of {Station}
     def data_types(params = {})
@@ -94,8 +94,29 @@ module NoaaNceiWeather
 
     # Retrieves a set of {Station Stations} based on the parameters given
     #
-    # @param params [Hash] Hash of parameters to filter data, any accepted by
-    #   {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#stations NOAA}
+    # @param params [Hash] Hash to set filters on the request sent to the NOAA API
+    # @option params [String] :datasetid Filter data types by their {DataSet}
+    # @option params [DataSet] :dataset Alternative way to pass :datasetid
+    # @option params [String] :locationid Restrict data to measurements from
+    #   stations in a locationid
+    # @option params [Location] :location Alternative way to pass :locationid
+    # @option params [String] :datacategoryid Restrict data to those with
+    #   data from a specific data category
+    # @option params [DataCategory] :datacategory Alternative way to pass :datacategoryid
+    # @option params [String] :datatypeid Restrict data to those with a specific
+    #   {DataType}
+    # @option params [DataType] :datatype Alternative way to pass datatypeid
+    # @option params [String] :extent The desired geographical extent for search.
+    #   Takes two points as lat1,long1,lat2,long2 as opposite corners of rectangle
+    # @option params [Date, String] :startdate Date or ISO formmated string to
+    #   restrict data sets to those with data after this date
+    # @option params [Date, String] :enddate Date or ISO formatted string to
+    #   restrict data sets to those with data before this date
+    # @option params [String] :sortfield ('id') Accepts string values 'id', 'name,
+    #   'mindate', 'maxdate', and 'datacoverage' to sort data before being returned
+    # @option params [String] :sortorder ('asc') Accepts 'asc' or 'desc' for sort order
+    # @option params [Integer] :limit Set a limit to the amount of records returned
+    # @option params [Integer] :offset (0) Used to offset the result list
     # @return [Array<Station>] An array of {Station} objects
     def self.where(params = {})
       data = super(@@endpoint, params)

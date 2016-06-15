@@ -1,5 +1,7 @@
 module NoaaNceiWeather
 
+  # @abstract Superclass to all of the resource classes used to help filter data
+  #   queried using {Data}
   class Weather
     extend Connection
 
@@ -22,10 +24,12 @@ module NoaaNceiWeather
       self.where
     end
 
+    # Used to query for a single ID
     def self.find(endpoint)
       self.request(endpoint)
     end
 
+    # Used to retrieve a single record with no specification
     def self.first
       self.where(limit: 1).first
     end

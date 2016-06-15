@@ -29,8 +29,7 @@ module NoaaNceiWeather
     # Retrieves a collection of {Dataset} objects associated with this instance
     #   of {Location}
     #
-    # @param params [Hash] Hash of parameters to filter data, any accpted by the
-    #   {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#datasets NOAA API}
+    # @param params [Hash] See {Dataset#where} for valid key/values.
     # @return [Array<Dataset>] An array of {Dataset} objects associated with this
     #   instance of {Location}
     def data_sets(params = {})
@@ -41,8 +40,7 @@ module NoaaNceiWeather
     # Retrieves a collection of {DataCategory} objects associated with this instance
     #   of {Location}
     #
-    # @param params [Hash] Hash of parameters to filter data, any accpted by the
-    #   {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#dataCategories NOAA API}
+    # @param params [Hash] See {DataCategory#where} for valid key/values.
     # @return [Array<DataCategory>] An array of {DataCategory} objects associated with this
     #   instance of {Location}
     def data_categories(params = {})
@@ -53,8 +51,7 @@ module NoaaNceiWeather
     # Retrieves a collection of {DataType} objects associated with this instance
     #   of {Location}
     #
-    # @param params [Hash] Hash of parameters to filter data, any accpted by the
-    #   {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#dataTypes NOAA API}
+    # @param params [Hash] See {DataType#where} for valid key/values.
     # @return [Array<DataType>] An array of {DataType} objects associated with this
     #   instance of {Location}
     def data_types(params = {})
@@ -65,8 +62,7 @@ module NoaaNceiWeather
     # Retrieves a collection of {Station} objects associated with this instance
     #   of {Location}
     #
-    # @param params [Hash] Hash of parameters to filter data, any accpted by the
-    #   {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#stations NOAA API}
+    # @param params [Hash] See {Station#where} for valid key/values.
     # @return [Array<Station>] An array of {Station} objects associated with this
     #   instance of {Location}
     def stations(params = {})
@@ -107,8 +103,24 @@ module NoaaNceiWeather
 
     # Finds a set of {Location Locations} based on the parameters given
     #
-    # @param params [Hash] Hash of parameters to filter data, any accepted by
-    #   {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#locations NOAA}
+    # @param params [Hash] Hash to set filters on the request sent to the NOAA API
+    # @option params [String] :datasetid Filter data types by their {DataSet}
+    # @option params [DataSet] :dataset Alternative way to pass :datasetid
+    # @option params [String] :locationid Restrict data to measurements from
+    #   stations in a locationid
+    # @option params [Location] :location Alternative way to pass :locationid
+    # @option params [String] :datacategoryid Restrict locations to those with
+    #   data from a specific data category
+    # @option params [DataCategory] :datacategory Alternative way to pass :datacategoryid
+    # @option params [Date, String] :startdate Date or ISO formmated string to
+    #   restrict data sets to those with data after this date
+    # @option params [Date, String] :enddate Date or ISO formatted string to
+    #   restrict data sets to those with data before this date
+    # @option params [String] :sortfield ('id') Accepts string values 'id', 'name,
+    #   'mindate', 'maxdate', and 'datacoverage' to sort data before being returned
+    # @option params [String] :sortorder ('asc') Accepts 'asc' or 'desc' for sort order
+    # @option params [Integer] :limit Set a limit to the amount of records returned
+    # @option params [Integer] :offset (0) Used to offset the result list
     # @return [Array<Location>] An array of {Location} objects
     def self.where(params = {})
       data = super(@@endpoint, params)

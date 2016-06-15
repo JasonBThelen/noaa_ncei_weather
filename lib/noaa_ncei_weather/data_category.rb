@@ -1,4 +1,5 @@
 module NoaaNceiWeather
+
   # Class for querying against the /datacategory endpoint of the NOAA API
   class DataCategory < Weather
 
@@ -12,8 +13,7 @@ module NoaaNceiWeather
 
     # Finds the {DataType DataTypes} associated with a {DataCategory} object
     #
-    # @param params [Hash] Hash of parameters to filter data returned as
-    #   documented by {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#dataTypes NOAA}
+    # @param params [Hash] See {DataType#where} for valid param key/values
     # @return [Array<DataType>] Array of the data types associated with this
     #   {DataCategory} instance
     def data_types(params = {})
@@ -21,17 +21,22 @@ module NoaaNceiWeather
       DataType.where(params)
     end
 
-    # Finds the {Location}s associated with a {DataCategory} object
+    # Finds the {Location Locations} associated with a {DataCategory} object
     #
-    # @param params [Hash] Hash of parameters to filter data, accepts params
-    #   documented by {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#locations NOAA}
+    # @param params [Hash] See {Location#where} for valid param key/values
     # @return [Array<DataType>] Array of the data types associated with this
     #   DataCategory instance
+    # @see Location#where for valid param key/values
     def locations(params = {})
       params.merge!({datacategoryid: @id})
       Location.where(params)
     end
 
+    # Finds the {Station Stations} associated with a {DataCategory} object
+    #
+    # @param params [Hash] See {Station#where} for valid param key/values
+    # @return [Array<DataType>] Array of the data types associated with this
+    #   DataCategory instance
     def stations(params = {})
       params.merge!({datacategoryid: @id})
       Station.where(params)
@@ -52,7 +57,21 @@ module NoaaNceiWeather
 
     # Finds a set of {DataCategory DataCategories} based on the parameters given
     #
-    # @param params [Hash] Hash of parameters to filter data, any accepted by {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#locationCategories NOAA}.
+    # @param params [Hash] Hash to set filters on the request sent to the NOAA API
+    # @option params [String] :datasetid Filter by the dataset to which the
+    #   data category belongs
+    # @option params [Dataset] :dataset Alternative way to pass :datasetid
+    # @option params [String] :locationid Restrict data to measurements from
+    #   stations in a locationid
+    # @option params [Location] :location Alternative way to pass :locationid
+    # @option params [String] :stationid Restrict data to measurements from a
+    #   specific station
+    # @option params [Station] :station Alternative way to pass :stationid
+    # @option params [String] :sortfield ('id') Accepts string values 'id', 'name,
+    #   'mindate', 'maxdate', and 'datacoverage' to sort data before being returned
+    # @option params [String] :sortorder ('asc') Accepts 'asc' or 'desc' for sort order
+    # @option params [Integer] :limit Set a limit to the amount of records returned
+    # @option params [Integer] :offset (0) Used to offset the result list
     # @return [Array<DataCategory>] Array of {DataCategory} objects that match the filter.
     def self.where(params = {})
       data = super(@@endpoint, params)

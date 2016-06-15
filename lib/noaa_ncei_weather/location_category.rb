@@ -14,8 +14,7 @@ module NoaaNceiWeather
     # Retrieves the {Location Locations} associated with the {LocationCategory}.
     #   {LocationCategory} has a one to many relationship with {Loction}.
     #
-    # @param params [Hash] Hash of parameters to filter data, any accepted by the
-    #   {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#locations NOAA API}
+    # @param params [Hash] See {Location#where} for valid key/values.
     # @return [Array<Location>] Array of the {Location} objects associated with
     #   the instance of {LocationCategory}
     def locations(params = {})
@@ -39,8 +38,18 @@ module NoaaNceiWeather
     # Retrieves a collection of {LocationCategory LocationCategories} based on
     #   the given parameters
     #
-    # @param params [Hash] Hash of paramters to filter data, any accepted by the
-    #   {http://www.ncdc.noaa.gov/cdo-web/webservices/v2#locationCategories NOAA API}
+    # @param params [Hash] Hash to set filters on the request sent to the NOAA API
+    # @option params [String] :datasetid Filter data types by their {DataSet}
+    # @option params [DataSet] :dataset Alternative way to pass :datasetid
+    # @option params [Date, String] :startdate Date or ISO formmated string to
+    #   restrict location categories to those with data after this date
+    # @option params [Date, String] :enddate Date or ISO formatted string to
+    #   restrict location categories to those with data before this date
+    # @option params [String] :sortfield ('id') Accepts string values 'id', 'name,
+    #   'mindate', 'maxdate', and 'datacoverage' to sort data before being returned
+    # @option params [String] :sortorder ('asc') Accepts 'asc' or 'desc' for sort order
+    # @option params [Integer] :limit Set a limit to the amount of records returned
+    # @option params [Integer] :offset (0) Used to offset the result list
     # @return [Array<LocationCategory>] An array of {LocationCategory} objects that
     #   match the filters given
     def self.where(params = {})
