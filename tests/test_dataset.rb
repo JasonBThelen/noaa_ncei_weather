@@ -12,7 +12,7 @@ class TestDataset < Test::Unit::TestCase
     assert data.kind_of?(Array), "data category .all is returning an empty array"
     assert_equal data.first.class, NoaaNceiWeather::Dataset, "Object returned is not of the correct type"
     sleep 1
-    total = NoaaNceiWeather::Connection.request('datasets')['metadata']['resultset']['count']
+    total = NoaaNceiWeather::Dataset.request('datasets')['metadata']['resultset']['count']
     assert_equal data.count, total, "all is returning a different amount than the total"
   end
 

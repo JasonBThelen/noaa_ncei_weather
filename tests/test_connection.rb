@@ -8,7 +8,7 @@ class TestConnection < Test::Unit::TestCase
   def test_request_without_token
     NoaaNceiWeather::Connection.token = ''
     assert_raise RestClient::BadRequest do
-      NoaaNceiWeather::Connection.request('locationcategories')
+      NoaaNceiWeather::LocationCategory.request('locationcategories')
     end
   end
 end

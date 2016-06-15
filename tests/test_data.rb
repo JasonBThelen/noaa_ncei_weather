@@ -5,21 +5,6 @@ class TestData < Test::Unit::TestCase
     super
   end
 
-  def test_all
-    data = NoaaNceiWeather::Data.all
-    refute data.any?, "all should not return any records"
-  end
-
-  def test_first
-    data = NoaaNceiWeather::Data.first
-    assert_nil data, "first should return nil"
-  end
-
-  def test_find
-    data = NoaaNceiWeather::Data.find('id')
-    assert_nil data, "find should return nil"
-  end
-
   def test_where
     sleep 1
     data = NoaaNceiWeather::Data.where('GHCND', (Date.today - 30).iso8601, (Date.today - 29).iso8601, {limit: 5})
@@ -32,7 +17,7 @@ class TestData < Test::Unit::TestCase
     sleep 1
     data = NoaaNceiWeather::Data.where('GHCND', date.iso8601, date.iso8601, {limit: 5})
     assert_block do
-      data.all? {|item| item.date == date }
+      data.all? {|item| item.date.to_date == date }
     end
   end
 
@@ -41,8 +26,8 @@ class TestData < Test::Unit::TestCase
     date_end = Date.today - 10
     sleep 1
     data = NoaaNceiWeather::Data.where('GHCND', date_start, date_end, {stationid: 'GHCND:USC00505464'})
-    assert data.first.date == date_start, "first record returned should be from startdate"
-    assert data.last.date == date_end, "last record returned should be from enddate"
+    assert data.first.date.to_date == date_start, "first record returned should be from startdate"
+    assert data.last.date.to_date == date_end, "last record returned should be from enddate"
     sleep 1
     data = NoaaNceiWeather::Data.where('GHCND', date_start, date_end, {datatypeid: 'PRCP', stationid: 'GHCND:USC00505464', limit: 365})
     assert_equal data.count, 365, "getting a different count than set limit"
