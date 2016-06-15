@@ -14,7 +14,7 @@ module NoaaNceiWeather
     # Retrieves the {Location Locations} associated with the {LocationCategory}.
     #   {LocationCategory} has a one to many relationship with {Loction}.
     #
-    # @param params [Hash] See {Location#where} for valid key/values.
+    # @param params [Hash] See {Location.where} for valid key/values.
     # @return [Array<Location>] Array of the {Location} objects associated with
     #   the instance of {LocationCategory}
     def locations(params = {})
@@ -24,7 +24,7 @@ module NoaaNceiWeather
 
     # Finds a specific instance of {LocationCategory} by ID
     #
-    # @param id [String] ID of the {LocationCategory} object you want
+    # @param id [String] ID of the resource
     # @return [LocationCategory] An instance of {LocationCategory} with the given ID
     def self.find(id)
       data = super(@@endpoint + "/#{id}")
@@ -39,8 +39,8 @@ module NoaaNceiWeather
     #   the given parameters
     #
     # @param params [Hash] Hash to set filters on the request sent to the NOAA API
-    # @option params [String] :datasetid Filter data types by their {DataSet}
-    # @option params [DataSet] :dataset Alternative way to pass :datasetid
+    # @option params [String] :datasetid String ID of a {DataSet}
+    # @option params [DataSet] :dataset {DataSet} object
     # @option params [Date, String] :startdate Date or ISO formmated string to
     #   restrict location categories to those with data after this date
     # @option params [Date, String] :enddate Date or ISO formatted string to

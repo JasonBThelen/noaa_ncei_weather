@@ -16,7 +16,7 @@ module NoaaNceiWeather
     #   @return [Date] Earliest availability of data with this type
     # @!attribute [r] maxdate
     #   @return [String] Latest availability of data with this type
-  attr_reader :mindate, :maxdate, :datacoverage
+    attr_reader :mindate, :maxdate, :datacoverage
 
     # Creates new {DataType} object
     def initialize(id, name, datacoverage, mindate, maxdate)
@@ -26,7 +26,7 @@ module NoaaNceiWeather
       @maxdate = maxdate
     end
 
-    # Retrieves the {Dataset} that this instance of {DataType} belongs to
+    # Finds the {Dataset} that this instance of {DataType} belongs to.
     # {Dataset} has a one to many relationship with {DataType}.
     #
     # @return [Dataset] The {Dataset} object that this instance of {DataType} belongs to
@@ -37,7 +37,7 @@ module NoaaNceiWeather
     # Retrieves the {Station Stations} that are associated with this instance
     # of {DataType}. {DataType} and {Station} have a many to many relationship
     #
-    # @param params [Hash] See {NoaaNceiWeather::Station#where} for valid key/values
+    # @param params [Hash] See {NoaaNceiWeather::Station.where} for valid key/values
     # @return [Array<Station>] An Array of {Station} objects assocated with the
     #   instance of {DataType}
     def stations(params = {})
@@ -58,19 +58,17 @@ module NoaaNceiWeather
       end
     end
 
-    # Finds a set of {DataType DataTypes} based on the parameters given
+    # Retrieves a set of {DataType DataTypes} based on the parameters given
     #
     # @param params [Hash] Hash to set filters on the request sent to the NOAA API
-    # @option params [String] :datasetid Filter data types by their {Dataset}
-    # @option params [Dataset] :dataset Alternative way to pass :datasetid
-    # @option params [String] :locationid Restrict data to measurements from
-    #   stations in a locationid
-    # @option params [Location] :location Alternative way to pass :locationid
-    # @option params [String] :stationid Restrict data to measurements from a
-    #   specific station
-    # @option params [Station] :station Alternative way to pass :stationid
-    # @option params [String] :datacategoryid Restrict data types by their {DataCategory}
-    # @option params [DataCategory] :datacategory Alternative way to pass :datacategoryid
+    # @option params [String] :datasetid String ID of a {Dataset}
+    # @option params [Dataset] :dataset {Dataset} object
+    # @option params [String] :locationid String ID of a {Location}
+    # @option params [Location] :location {Location} object
+    # @option params [String] :stationid String ID of a {Station}
+    # @option params [Station] :station {Station} object
+    # @option params [String] :datacategoryid String ID of a {DataCategory}
+    # @option params [DataCategory] :datacategory {DataCategory} object
     # @option params [Date, String] :startdate Date or ISO formmated string to
     #   restrict data types to those with data after this date
     # @option params [Date, String] :enddate Date or ISO formatted string to

@@ -11,9 +11,11 @@ module NoaaNceiWeather
     # @!attribute [r] name
     #   @return [String] The descriptive name of the {DataCategory}
 
-    # Finds the {DataType DataTypes} associated with a {DataCategory} object
+    # Retrieves the {DataType DataTypes} associated with a {DataCategory} object
+    # {DataCategory} has a one to many relationship with {DataType} (in rare
+    # cases a DataType may belong to more than one DataCategory)
     #
-    # @param params [Hash] See {DataType#where} for valid param key/values
+    # @param params [Hash] See {DataType.where} for valid param key/values
     # @return [Array<DataType>] Array of the data types associated with this
     #   {DataCategory} instance
     def data_types(params = {})
@@ -21,20 +23,21 @@ module NoaaNceiWeather
       DataType.where(params)
     end
 
-    # Finds the {Location Locations} associated with a {DataCategory} object
+    # Retrieves the {Location Locations} associated with a {DataCategory} object.
+    # {Location} and {DataCategory} have a many to many relationship.
     #
-    # @param params [Hash] See {Location#where} for valid param key/values
+    # @param params [Hash] See {Location.where} for valid param key/values
     # @return [Array<DataType>] Array of the data types associated with this
     #   DataCategory instance
-    # @see Location#where for valid param key/values
     def locations(params = {})
       params.merge!({datacategoryid: @id})
       Location.where(params)
     end
 
-    # Finds the {Station Stations} associated with a {DataCategory} object
+    # Retrieves the {Station Stations} associated with a {DataCategory} object
+    # {Station} and {DataCategory} have a many to many relationship.
     #
-    # @param params [Hash] See {Station#where} for valid param key/values
+    # @param params [Hash] See {Station.where} for valid param key/values
     # @return [Array<DataType>] Array of the data types associated with this
     #   DataCategory instance
     def stations(params = {})
@@ -55,18 +58,15 @@ module NoaaNceiWeather
       end
     end
 
-    # Finds a set of {DataCategory DataCategories} based on the parameters given
+    # Retrieves a set of {DataCategory DataCategories} based on the parameters given
     #
     # @param params [Hash] Hash to set filters on the request sent to the NOAA API
-    # @option params [String] :datasetid Filter by the dataset to which the
-    #   data category belongs
-    # @option params [Dataset] :dataset Alternative way to pass :datasetid
-    # @option params [String] :locationid Restrict data to measurements from
-    #   stations in a locationid
-    # @option params [Location] :location Alternative way to pass :locationid
-    # @option params [String] :stationid Restrict data to measurements from a
-    #   specific station
-    # @option params [Station] :station Alternative way to pass :stationid
+    # @option params [String] :datasetid String ID of a {Dataset}
+    # @option params [Dataset] :dataset {Dataset} object
+    # @option params [String] :locationid String ID of a {Location}
+    # @option params [Location] :location {Location} object
+    # @option params [String] :stationid String ID of a {Station}
+    # @option params [Station] :station {Station} object
     # @option params [String] :sortfield ('id') Accepts string values 'id', 'name,
     #   'mindate', 'maxdate', and 'datacoverage' to sort data before being returned
     # @option params [String] :sortorder ('asc') Accepts 'asc' or 'desc' for sort order

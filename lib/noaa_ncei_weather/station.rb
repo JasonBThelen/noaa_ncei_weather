@@ -7,7 +7,7 @@ module NoaaNceiWeather
     @@endpoint = 'stations'
 
     # @!attribute [r] id
-    #   @return [String] The unique Identifier, semi-readable
+    #   @return [String] The unique Identifier
     # @!attribute [r] name
     #   @return [String] The descriptive name
     # @!attribute [r] datacoverage
@@ -41,7 +41,7 @@ module NoaaNceiWeather
     # Retrieves the {Dataset Datasets} that this instance of {Dataset} has available.
     #   {Station} and {Dataset} have a many to many relationship.
     #
-    # @param params [Hash] See {DataSet#where} for valid key/values.
+    # @param params [Hash] See {Dataset.where} for valid key/values.
     # @return [Array<Dataset>] An array of {Dataset} objects that
     #   belong to this instance of {Dataset}
     def data_sets(params = {})
@@ -52,7 +52,7 @@ module NoaaNceiWeather
     # Retrieves the {DataCategory DataCategories} that this instance of {Station} has available.
     #   {Station} and {DataCategory} have a many to many relationship.
     #
-    # @param params [Hash] See {DataCategory#where} for valid key/values.
+    # @param params [Hash] See {DataCategory.where} for valid key/values.
     # @return [Array<DataCategory>] An array of {DataCategory} objects that
     #   belong to this instance of {Station}
     def data_categories(params = {})
@@ -63,7 +63,7 @@ module NoaaNceiWeather
     # Retrieves the {DataType DataTypes} that this instance of {Station} has available.
     #   {Station} and {DataType} have a many to many relationship.
     #
-    # @param params [Hash] See {DataType#where} for valid key/values.
+    # @param params [Hash] See {DataType.where} for valid key/values.
     # @return [Array<DataType>] An array of {DataType} objects that
     #   belong to this instance of {Station}
     def data_types(params = {})
@@ -95,20 +95,17 @@ module NoaaNceiWeather
     # Retrieves a set of {Station Stations} based on the parameters given
     #
     # @param params [Hash] Hash to set filters on the request sent to the NOAA API
-    # @option params [String] :datasetid Filter data types by their {DataSet}
-    # @option params [DataSet] :dataset Alternative way to pass :datasetid
-    # @option params [String] :locationid Restrict data to measurements from
-    #   stations in a locationid
-    # @option params [Location] :location Alternative way to pass :locationid
-    # @option params [String] :datacategoryid Restrict data to those with
-    #   data from a specific data category
-    # @option params [DataCategory] :datacategory Alternative way to pass :datacategoryid
-    # @option params [String] :datatypeid Restrict data to those with a specific
-    #   {DataType}
-    # @option params [DataType] :datatype Alternative way to pass datatypeid
-    # @option params [String] :extent The desired geographical extent for search.
+    # @option params [String] :datasetid String ID of a {Dataset}
+    # @option params [DataSet] :dataset {Dataset} object
+    # @option params [String] :locationid String ID of a {Location}
+    # @option params [Location] :location {Location} object
+    # @option params [String] :datacategoryid String ID of a {DataCategory}
+    # @option params [DataCategory] :datacategory {DataCategory} object
+    # @option params [String] :datatypeid String ID of a {DataType}
+    # @option params [DataType] :datatype {DataType} object
+    # @option params [String] :extent The desired geographical area to search.
     #   Takes two points as lat1,long1,lat2,long2 as opposite corners of rectangle
-    # @option params [Date, String] :startdate Date or ISO formmated string to
+    # @option params [Date, String] :startdate Date or ISO formatted string to
     #   restrict data sets to those with data after this date
     # @option params [Date, String] :enddate Date or ISO formatted string to
     #   restrict data sets to those with data before this date

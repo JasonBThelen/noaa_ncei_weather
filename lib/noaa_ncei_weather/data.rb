@@ -12,9 +12,9 @@ module NoaaNceiWeather
     @@endpoint = 'data'
 
     # @!attribute [r] date
-    #   @return [Date] The date this data object was measured
+    #   @return [DateTime] The date/time this data object was measured
     # @!attribute [r] datatype
-    #   @return [String] The type of data measured, ID of DataType
+    #   @return [String] The type of data measured, ID of {DataType}
     # @!attribute [r] station
     #   @return [String] The station at which the measurement was taken, ID of {Station}
     # @!attribute [r] value
@@ -38,16 +38,14 @@ module NoaaNceiWeather
     #   the earliest data that should be retrieved
     # @param enddate [String, Date] A Date or ISO8601 formatted date string for
     #   the latest data that should be retrieved
-    # @param params [Hash] A hash including other params to pass as accepted by the NOAA API
-    # @option params [String] :datatypeid Specific data type within the selected
-    #   dataset that should be retrieved
-    # @option params [DataType] :datatype Alternative way to pass :datatypeid
-    # @option params [String] :locationid Restrict data to measurements from
-    #   stations in a locationid
-    # @option params [Location] :location Alternative way to pass :locationid
-    # @option params [String] :stationid Restrict data to measurements from a
-    #   specific station
-    # @option params [Station] :station Alternative way to pass :stationid
+    # @param params [Hash] A hash including other params to set filters on the NOAA request
+    # @option params [String] :datatypeid String ID of a {DataType}
+    #   within the selected dataset that should be retrieved
+    # @option params [DataType] :datatype {DataType} object
+    # @option params [String] :locationid String ID of a {Location}
+    # @option params [Location] :location {Location} object
+    # @option params [String] :stationid String ID of a {Station}
+    # @option params [Station] :station {Station} object
     # @option params [String] :units ('metric') Accepts string 'standard' or 'metric'
     #   to set the unit of measurement returned in the value
     # @option params [String] :sortfield ('id') Accepts string values 'id', 'name,

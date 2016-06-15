@@ -29,12 +29,11 @@ module NoaaNceiWeather
       @maxdate = maxdate
     end
 
-    # Retrieves the {DataCategory DataCategories} that this instance of Dataset belongs to.
-    # Dataset and {DataCategory DataCategory} have a many to many relationship.
+    # Retrieves the {DataCategory DataCategories} associated with this {Dataset}.
     #
-    # @param params [Hash] See {DataCategory#where} for valid key/values
-    # @return [Array<DataCategory>] An array of {DataCategory} objects that
-    #   belong to this instance of {Dataset}
+    # @param params [Hash] See {DataCategory.where} for valid key/values
+    # @return [Array<DataCategory>] An array of {DataCategory} objects associated
+    #   with this instance of {Dataset}
     def data_categories(params = {})
       params.merge!({datasetid: @id})
       DataCategory.where(params)
@@ -43,9 +42,9 @@ module NoaaNceiWeather
     # Retrieves the {DataType DataTypes} associated with this instance of {Dataset}.
     # {Dataset} and {DataType} have a many to many relationship.
     #
-    # @param params [Hash] See {DataType#where} for valid key/values
-    # @return [Array<DataType>] An array of {DataType} objects that this instance
-    #   of {Dataset} belongs to
+    # @param params [Hash] See {DataType.where} for valid key/values
+    # @return [Array<DataType>] An array of {DataType} objects associated with this
+    #   instance of {Dataset}
     def data_types(params = {})
       params.merge!({datasetid: @id})
       DataType.where(params)
@@ -54,7 +53,7 @@ module NoaaNceiWeather
     # Retrieves the {LocationCategory LocationCategories} associated with this instance of {Dataset}.
     # {Dataset} and {DataType} have a many to many relationship.
     #
-    # @param params [Hash] See {LocationCategory#where} for valid key/values.
+    # @param params [Hash] See {LocationCategory.where} for valid key/values.
     # @return [Array<LocationCategory>] An array of {LocationCategory} objects associated
     #   with this instance of {Dataset}.
     def location_categories(params = {})
@@ -65,7 +64,7 @@ module NoaaNceiWeather
     # Retrieves the {Location Locations} associated with this instance of {Dataset}.
     # {Dataset} and {Location} have a many to many relationship.
     #
-    # @param params [Hash] See {Location#where} for valid key/values.
+    # @param params [Hash] See {Location.where} for valid key/values.
     # @return [Array<Location>] An array of {Location} objects associated with
     #   this instance of {Dataset}
     def locations(params = {})
@@ -76,7 +75,7 @@ module NoaaNceiWeather
     # Retrieves the {Station Stations} associated with this instance of {Dataset}.
     # {Dataset} and {Station} have a many to many relationship
     #
-    # @param params [Hash] See {Station#where} for valid key/values.
+    # @param params [Hash] See {Station.where} for valid key/values.
     # @return [Array<Station>] An array of {Station} objects associated with this
     #   instance of {Dataset}.
     def stations(params = {})
@@ -100,14 +99,12 @@ module NoaaNceiWeather
     # Finds a set of {Dataset Datasets} based on the parameters given
     #
     # @param params [Hash] Hash to set filters on the request sent to the NOAA API
-    # @option params [String] :datatypeid Filter data types by their {DataType}
-    # @option params [DataType] :datatype Alternative way to pass :datatypeid
-    # @option params [String] :locationid Restrict data to measurements from
-    #   stations in a locationid
-    # @option params [Location] :location Alternative way to pass :locationid
-    # @option params [String] :stationid Restrict data to measurements from a
-    #   specific station
-    # @option params [Station] :station Alternative way to pass :stationid
+    # @option params [String] :datatypeid String ID of a {DataType}
+    # @option params [DataType] :datatype {DataType} object
+    # @option params [String] :locationid String ID of a {Location}
+    # @option params [Location] :location {Location} object
+    # @option params [String] :stationid String ID of a {Station}
+    # @option params [Station] :station {Station} object
     # @option params [Date, String] :startdate Date or ISO formmated string to
     #   restrict data sets to those with data after this date
     # @option params [Date, String] :enddate Date or ISO formatted string to

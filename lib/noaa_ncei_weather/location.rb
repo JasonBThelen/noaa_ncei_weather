@@ -13,9 +13,9 @@ module NoaaNceiWeather
     # @!attribute [r] datacoverage
     #   @return [Numeric] The estimated completeness of data, value between 0 and 1
     # @!attribute [r] mindate
-    #   @return [Date] Earliest availability of data in this set
+    #   @return [Date] Earliest availability of data in this location
     # @!attribute [r] maxdate
-    #   @return [String] Latest availability of data in this set
+    #   @return [String] Latest availability of data in this location
     attr_reader :mindate, :maxdate, :datacoverage
 
     # Creates a new instance of {Location}
@@ -29,7 +29,7 @@ module NoaaNceiWeather
     # Retrieves a collection of {Dataset} objects associated with this instance
     #   of {Location}
     #
-    # @param params [Hash] See {Dataset#where} for valid key/values.
+    # @param params [Hash] See {Dataset.where} for valid key/values.
     # @return [Array<Dataset>] An array of {Dataset} objects associated with this
     #   instance of {Location}
     def data_sets(params = {})
@@ -40,7 +40,7 @@ module NoaaNceiWeather
     # Retrieves a collection of {DataCategory} objects associated with this instance
     #   of {Location}
     #
-    # @param params [Hash] See {DataCategory#where} for valid key/values.
+    # @param params [Hash] See {DataCategory.where} for valid key/values.
     # @return [Array<DataCategory>] An array of {DataCategory} objects associated with this
     #   instance of {Location}
     def data_categories(params = {})
@@ -51,7 +51,7 @@ module NoaaNceiWeather
     # Retrieves a collection of {DataType} objects associated with this instance
     #   of {Location}
     #
-    # @param params [Hash] See {DataType#where} for valid key/values.
+    # @param params [Hash] See {DataType.where} for valid key/values.
     # @return [Array<DataType>] An array of {DataType} objects associated with this
     #   instance of {Location}
     def data_types(params = {})
@@ -62,7 +62,7 @@ module NoaaNceiWeather
     # Retrieves a collection of {Station} objects associated with this instance
     #   of {Location}
     #
-    # @param params [Hash] See {Station#where} for valid key/values.
+    # @param params [Hash] See {Station.where} for valid key/values.
     # @return [Array<Station>] An array of {Station} objects associated with this
     #   instance of {Location}
     def stations(params = {})
@@ -104,15 +104,13 @@ module NoaaNceiWeather
     # Finds a set of {Location Locations} based on the parameters given
     #
     # @param params [Hash] Hash to set filters on the request sent to the NOAA API
-    # @option params [String] :datasetid Filter data types by their {DataSet}
-    # @option params [DataSet] :dataset Alternative way to pass :datasetid
-    # @option params [String] :locationid Restrict data to measurements from
-    #   stations in a locationid
-    # @option params [Location] :location Alternative way to pass :locationid
-    # @option params [String] :datacategoryid Restrict locations to those with
-    #   data from a specific data category
-    # @option params [DataCategory] :datacategory Alternative way to pass :datacategoryid
-    # @option params [Date, String] :startdate Date or ISO formmated string to
+    # @option params [String] :datasetid String ID of a {Dataset}
+    # @option params [Dataset] :dataset {Dataset} object
+    # @option params [String] :locationid String ID of a {Location}
+    # @option params [Location] :location {Location} object
+    # @option params [String] :datacategoryid String ID of a {DataCategory}
+    # @option params [DataCategory] :datacategory {DataCategory} object
+    # @option params [Date, String] :startdate Date or ISO formatted string to
     #   restrict data sets to those with data after this date
     # @option params [Date, String] :enddate Date or ISO formatted string to
     #   restrict data sets to those with data before this date

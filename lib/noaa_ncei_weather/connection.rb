@@ -3,13 +3,13 @@ module NoaaNceiWeather
   # @abstract Contains common connection components shared between {Weather} and {Data}
   #   used to make requests to the NOAA API.
   module Connection
-    # Constant for the API URL
+    # Base URL for the NOAA API. Endppoints are appended in concrete classes.
     @@url = 'http://www.ncdc.noaa.gov/cdo-web/api/v2/'
 
     # Connection token required to make requests. Must be set before calling
     # class methods from any NoaaNceiWeather module classes.
     # @note Each Token is restricted to five request per second and 1,000 requests
-    #   per day
+    #   per day per the NOAA documentation
     @@token = ''
 
     # Set the request token to be used in requests to NOAA. Token must be obtained
@@ -20,11 +20,12 @@ module NoaaNceiWeather
     # @!attribute [w] token
     #   @return [String] Token required to be sent with any requests. This can be
     #     obtained for free from {http://www.ncdc.noaa.gov/cdo-web/token NOAA}.
+    #     The token is good for 5 requests per second, 1,000 requests per day.
     def self.token=(token)
       @@token = token
     end
 
-    # Parses params passed into any request. Allows more flexibility in what can
+    # Parses params to the format expected by the API. Allows more flexibility in what can
     # be sent in as a parameter. Objects, Dates, and Limits are converted
     # into strings as expected by the API.
     #
