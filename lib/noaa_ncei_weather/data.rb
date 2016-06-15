@@ -59,6 +59,7 @@ module NoaaNceiWeather
     def self.where(datasetid, startdate, enddate, params = {})
       datasetid = datasetid.id if datasetid.respond_to?(:id)
       params[:datasetid] = datasetid
+      params[:includemetadata] = true
 
       startdate = Date.parse startdate if startdate.kind_of? String
       enddate = Date.parse enddate if enddate.kind_of? String
