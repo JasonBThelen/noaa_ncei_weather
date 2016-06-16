@@ -14,7 +14,7 @@ class TestLocationCategory < Test::Unit::TestCase
     sleep 1
     total = NoaaNceiWeather::LocationCategory.request('locationcategories')['metadata']['resultset']['count']
     assert_equal data.count, total, "all is returning a different amount than the total"
-end
+  end
 
   def test_first
     sleep 1

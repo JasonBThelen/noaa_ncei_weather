@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 require './lib/noaa_ncei_weather'
 require 'test/unit'
 require './env.rb' if File.exist?('./env.rb')
