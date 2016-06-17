@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/JasonBThelen/noaa_ncei_weather.svg?branch=master)](https://travis-ci.org/JasonBThelen/noaa_ncei_weather)
+[![Coverage Status](https://coveralls.io/repos/github/JasonBThelen/noaa_ncei_weather/badge.svg?branch=master)](https://coveralls.io/github/JasonBThelen/noaa_ncei_weather?branch=master)
 
 # NOAA NCEI Weather
 
