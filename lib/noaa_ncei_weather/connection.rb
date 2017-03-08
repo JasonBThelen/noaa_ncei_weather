@@ -4,7 +4,7 @@ module NoaaNceiWeather
   #   used to make requests to the NOAA API.
   module Connection
     # Base URL for the NOAA API. Endppoints are appended in concrete classes.
-    @@url = 'http://www.ncdc.noaa.gov/cdo-web/api/v2/'
+    @@url = 'https://www.ncdc.noaa.gov/cdo-web/api/v2/'
 
     # Connection token required to make requests. Must be set before calling
     # class methods from any NoaaNceiWeather module classes.
